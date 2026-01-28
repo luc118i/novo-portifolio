@@ -1,8 +1,4 @@
-Aqui está um **README profissional**, já alinhado com o momento atual do seu projeto e com a proposta real do portfólio.
 
-Você pode copiar e colar direto no `README.md`.
-
----
 
 # Portfólio Profissional — Sistemas Digitais para Operações Reais
 
