@@ -1,0 +1,15 @@
+@import "./fonts.css";
+@import "./tailwind.css";
+@import "./theme.css";
+
+/* Smooth scroll global para âncoras */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Respeita acessibilidade (quem desativa animações) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
