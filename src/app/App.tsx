@@ -21,8 +21,8 @@ export default function App() {
       <OtherSolutions projects={projects} />
 
       {/* Estudos de caso na mesma página (âncoras) */}
-      {withCase.map((p) => (
-        <CaseStudy key={p.id} project={p} />
+      {withCase.map((p, i) => (
+        <CaseStudy key={p.id} project={p} nextProjectId={withCase[i + 1]?.id} />
       ))}
 
       <About />

@@ -1,101 +1,161 @@
-import { ArrowLeft, ArrowRight, CheckCircle2, Layers } from "lucide-react";
-
-import { motion } from "motion/react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  Layers,
+  ChevronDown,
+  Code2,
+} from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { Project } from "./types";
+import { CaseBackPill } from "./CaseBackPill";
+import { CaseCta } from "./CaseCta";
+import { AutomationShowcase } from "./AutomationShowcase";
+import { CodeSamples } from "./CodeSamples";
 
 interface CaseStudyProps {
   project: Project;
+  nextProjectId?: string;
 }
 
-function CodeSamples({
-  samples,
-}: {
-  samples: NonNullable<Project["codeSamples"]>;
-}) {
-  return (
-    <div className="mb-20">
-      <h3
-        className="text-3xl md:text-4xl mb-8"
-        style={{ color: "#0A0F24", fontWeight: 600 }}
-      >
-        Exemplos (Apps Script)
-      </h3>
+export function CaseStudy({ project, nextProjectId }: CaseStudyProps) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const heroRef = useRef<HTMLDivElement | null>(null);
 
-      <div className="grid gap-6">
-        {samples.map((s, idx) => (
-          <div
-            key={idx}
-            className="rounded-2xl border overflow-hidden"
-            style={{ borderColor: "#E2E8F0" }}
-          >
-            <div
-              className="p-5 bg-gray-50 border-b"
-              style={{ borderColor: "#E2E8F0" }}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h4
-                    style={{ color: "#0A0F24", fontWeight: 600 }}
-                    className="text-lg"
-                  >
-                    {s.title}
-                  </h4>
-                  {s.description && (
-                    <p
-                      className="mt-2 text-sm leading-relaxed"
-                      style={{ color: "#4A5568" }}
-                    >
-                      {s.description}
-                    </p>
-                  )}
-                </div>
-                <span
-                  className="shrink-0 px-3 py-1 rounded-full text-xs"
-                  style={{
-                    backgroundColor: "rgba(194, 161, 77, 0.15)",
-                    color: "#8A6F2A",
-                    fontWeight: 600,
-                  }}
-                >
-                  {s.language ?? "code"}
-                </span>
-              </div>
-            </div>
+  const [isActive, setIsActive] = useState(false);
+  const [onDark, setOnDark] = useState(false);
 
-            <div style={{ backgroundColor: "#0A0F24" }}>
-              <pre className="p-5 overflow-x-auto text-sm leading-relaxed">
-                <code style={{ color: "#E9EDF7" }}>{s.code}</code>
-              </pre>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+  // 1) Define quando o CASE está "ativo" (pra evitar aparecer antes da hora)
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
 
-export function CaseStudy({ project }: CaseStudyProps) {
+    let t: number | null = null;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (t) window.clearTimeout(t);
+        t = window.setTimeout(() => {
+          setIsActive(entry.isIntersecting);
+        }, 80);
+      },
+      { threshold: [0, 0.01], rootMargin: "-25% 0px -60% 0px" },
+    );
+
+    obs.observe(el);
+    return () => {
+      if (t) window.clearTimeout(t);
+      obs.disconnect();
+    };
+  }, []);
+
+  // 2) Define quando está em cima do HERO (pra alternar dark/light)
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+
+    let current = false; // começa false se você quer header claro até entrar no hero
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        const r = entry.intersectionRatio;
+
+        // liga "dark" só quando estiver bem dentro do hero
+        if (!current && r >= 0.35) {
+          current = true;
+          setOnDark(true);
+        }
+
+        // desliga "dark" só quando estiver bem fora do hero
+        if (current && r <= 0.12) {
+          current = false;
+          setOnDark(false);
+        }
+      },
+      {
+        threshold: [0, 0.12, 0.35, 1],
+        rootMargin: "-64px 0px -70% 0px",
+      },
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+
+    let t: number | null = null;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        // ✅ isActive: só ativa quando o topo do HERO estiver “chegando”
+        // Ajuste esse gatilho conforme seu headerHeight
+        const top = entry.boundingClientRect.top;
+        const headerH = 64; // ajuste se seu sticky tem outra altura
+        const shouldBeActive =
+          top <= headerH + 8 && entry.intersectionRatio > 0;
+
+        if (t) window.clearTimeout(t);
+        t = window.setTimeout(() => setIsActive(shouldBeActive), 60);
+      },
+      {
+        threshold: [0, 0.01, 0.1],
+        // rootMargin não precisa ser agressivo aqui, porque usamos boundingClientRect.top
+        rootMargin: "0px 0px 0px 0px",
+      },
+    );
+
+    obs.observe(el);
+    return () => {
+      if (t) window.clearTimeout(t);
+      obs.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+
+    let current = false;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        const r = entry.intersectionRatio;
+
+        // ✅ histerese (anti tremor)
+        if (!current && r >= 0.35) {
+          current = true;
+          setOnDark(true);
+        } else if (current && r <= 0.12) {
+          current = false;
+          setOnDark(false);
+        }
+      },
+      {
+        threshold: [0, 0.12, 0.35, 1],
+        rootMargin: "-64px 0px -70% 0px",
+      },
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id={`case-${project.id}`}
       className="bg-white scroll-mt-28"
       aria-label={`Estudo de caso: ${project.title}`}
     >
-      {/* Header */}
-      <div className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-xl bg-white/10 supports-[backdrop-filter]:bg-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-4">
-          <a
-            href="#projetos"
-            className="flex items-center gap-2 hover:gap-3 transition-all text-white/90"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="font-semibold">Voltar aos projetos</span>
-          </a>
-        </div>
-      </div>
+      <CaseBackPill onDark={onDark} active={isActive} />
 
       {/* Hero */}
       <div
+        ref={heroRef}
         className="relative py-20 px-6 md:px-12 overflow-hidden"
         style={{ backgroundColor: "#0A0F24" }}
       >
@@ -204,7 +264,6 @@ export function CaseStudy({ project }: CaseStudyProps) {
         </div>
 
         {/* Solution */}
-
         <div className="mb-20">
           <h3
             className="text-3xl md:text-4xl mb-6"
@@ -218,7 +277,10 @@ export function CaseStudy({ project }: CaseStudyProps) {
         </div>
 
         {project.codeSamples?.length ? (
-          <CodeSamples samples={project.codeSamples} />
+          <>
+            <AutomationShowcase samples={project.codeSamples} />
+            <CodeSamples samples={project.codeSamples} />
+          </>
         ) : null}
 
         {/* Features */}
@@ -298,6 +360,9 @@ export function CaseStudy({ project }: CaseStudyProps) {
             ))}
           </div>
         </div>
+        {/* ✅ Fechamento / CTA final (sem redundância) */}
+        <CaseCta nextProjectId={nextProjectId} />
+
         {/* Links do projeto */}
         {project.links?.length ? (
           <div className="mt-12">
@@ -332,18 +397,6 @@ export function CaseStudy({ project }: CaseStudyProps) {
             </div>
           </div>
         ) : null}
-
-        {/* CTA final */}
-        <div className="mt-16">
-          <a
-            href="#projetos"
-            className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50"
-            style={{ color: "#4A5568", fontWeight: 600 }}
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Voltar aos projetos
-          </a>
-        </div>
       </div>
     </section>
   );

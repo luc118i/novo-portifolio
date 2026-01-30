@@ -15,6 +15,8 @@ export type CodeSample = {
   description?: string;
   language?: "javascript" | "ts" | "bash" | "json";
   code: string;
+
+  screenshot?: string;
 };
 
 export type Project = {

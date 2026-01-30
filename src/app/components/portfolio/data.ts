@@ -185,10 +185,11 @@ export const projects: Project[] = [
 
     codeSamples: [
       {
-        title: "Exemplo 1: Menu + atalhos operacionais",
+        title: "Menu + atalhos operacionais",
         description:
           "Menu principal no Google Sheets para abrir histórico, dashboard e registrar ocorrências (Apps Script).",
         language: "javascript",
+        screenshot: "/projects/google-sheets-automation/menu.webp", // ✅ print do menu/atalhos
         code: `/** MENU PRINCIPAL */
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
@@ -217,10 +218,11 @@ function abrirDashboard() {
 }`,
       },
       {
-        title: "Exemplo 2: Normalização + busca fuzzy",
+        title: "Normalização + busca fuzzy",
         description:
           "Normaliza acentos/caixa/espaços e permite match tolerante (cidade/ponto) com variações.",
         language: "javascript",
+        screenshot: "/projects/google-sheets-automation/busca.webp", // ✅ seu print de busca
         code: `function nf(s) {
   return String(s || "")
     .normalize("NFD").replace(/[\\u0300-\\u036f]/g, "")
@@ -230,6 +232,151 @@ function abrirDashboard() {
 function fuzzyMatch(a, b) {
   const x = nf(a), y = nf(b);
   return x === y || x.startsWith(y) || y.startsWith(x) || x.includes(y) || y.includes(x);
+}`,
+      },
+      {
+        title: "Registro de ocorrência (formulário)",
+        description:
+          "Formulário dentro do Sheets para registrar ocorrência padronizada sem depender de mensagens soltas.",
+        language: "javascript",
+        screenshot: "/projects/google-sheets-automation/ocorrencia.webp", // ✅ seu print do formulário
+        code: `// (Trecho essencial) Form + integração Apps Script (HTMLService)
+
+/** Helpers */
+const $ = (s) => document.querySelector(s);
+const setStatus = (el, msg, ok) => {
+  el.textContent = msg;
+  el.className = ok ? "status ok" : "status err";
+};
+
+let locaisCache = [];
+let motoristasCache = [];
+
+/** Boot: carrega dados para os selects */
+google.script.run.withSuccessHandler((locais) => {
+  locaisCache = locais;
+  const sel = $("#localSelect");
+  sel.innerHTML = '<option value="">Selecione o local...</option>';
+  locais.forEach((l) => {
+    const opt = document.createElement("option");
+    opt.value = \`\${l.id}::\${l.nome}\`;
+    opt.textContent = l.nome;
+    sel.appendChild(opt);
+  });
+}).getLocais();
+
+google.script.run.withSuccessHandler((motoristas) => {
+  motoristasCache = motoristas;
+  const sel = $("#motoristaSelect");
+  sel.innerHTML = '<option value="">Selecione o motorista...</option>';
+  motoristas.forEach((m) => {
+    const opt = document.createElement("option");
+    opt.value = \`\${m.id}::\${m.nome}\`;
+    opt.textContent = m.nome;
+    sel.appendChild(opt);
+  });
+}).getMotoristas();
+
+/** Sync: ID <-> select (evita erro operacional) */
+function buscarLocal() {
+  const id = $("#localIdInput").value.trim();
+  if (!id) return;
+  const local = locaisCache.find((l) => String(l.id) === id);
+  $("#localSelect").value = local ? \`\${local.id}::\${local.nome}\` : "";
+}
+
+function sincronizarIdLocal() {
+  const val = $("#localSelect").value;
+  if (!val) return;
+  const [id] = val.split("::");
+  $("#localIdInput").value = id;
+}
+
+function buscarMotorista() {
+  const id = $("#motoristaIdInput").value.trim();
+  if (!id) return;
+  const mot = motoristasCache.find((m) => String(m.id) === id);
+  $("#motoristaSelect").value = mot ? \`\${mot.id}::\${mot.nome}\` : "";
+}
+
+function sincronizarIdMotorista() {
+  const val = $("#motoristaSelect").value;
+  if (!val) return;
+  const [id] = val.split("::");
+  $("#motoristaIdInput").value = id;
+}
+
+/** Navegação: tela principal <-> cadastro (UX de sistema) */
+function abrirCadastroMotorista() {
+  $("#telaPrincipal").classList.add("hidden");
+  $("#telaCadastroMotorista").classList.remove("hidden");
+}
+
+function voltarParaPrincipal() {
+  $("#telaCadastroMotorista").classList.add("hidden");
+  $("#telaPrincipal").classList.remove("hidden");
+}
+
+/** Cadastro: adiciona motorista e rehidrata select */
+function salvarMotorista() {
+  const id = $("#novoMotoristaId").value.trim();
+  const nome = $("#novoMotoristaNome").value.trim();
+  const base = $("#novoMotoristaBase").value.trim();
+  const status = $("#statusMotorista");
+
+  if (!id || !nome || !base) {
+    setStatus(status, "Preencha ID, Nome e Base do motorista.", false);
+    return;
+  }
+
+  google.script.run
+    .withSuccessHandler(() => {
+      setStatus(status, "✅ Motorista adicionado com sucesso!", true);
+      // Recarrega o select para refletir a inclusão
+      google.script.run.withSuccessHandler((motoristas) => {
+        motoristasCache = motoristas;
+        const sel = $("#motoristaSelect");
+        sel.innerHTML = '<option value="">Selecione o motorista...</option>';
+        motoristas.forEach((m) => {
+          const opt = document.createElement("option");
+          opt.value = \`\${m.id}::\${m.nome}\`;
+          opt.textContent = m.nome;
+          sel.appendChild(opt);
+        });
+      }).getMotoristas();
+
+      voltarParaPrincipal();
+    })
+    .withFailureHandler((err) => {
+      setStatus(status, err?.message || "Erro ao salvar.", false);
+    })
+    .addMotorista({ id, nome, base });
+}
+
+/** Registro: valida e salva ocorrência */
+function salvarOcorrencia() {
+  const localRaw = $("#localSelect").value;
+  const carro = $("#carroInput").value.trim();
+  const motoristaRaw = $("#motoristaSelect").value;
+  const status = $("#status");
+
+  if (!localRaw || !carro || !motoristaRaw) {
+    setStatus(status, "Preencha todos os campos obrigatórios.", false);
+    return;
+  }
+
+  const [localId, localNome] = localRaw.split("::");
+  const [motoristaId, motoristaNome] = motoristaRaw.split("::");
+
+  google.script.run
+    .withSuccessHandler(() => {
+      setStatus(status, "✅ Registro salvo com sucesso!", true);
+      $("#carroInput").focus();
+    })
+    .withFailureHandler((err) => {
+      setStatus(status, err?.message || "Erro ao salvar.", false);
+    })
+    .addOcorrencia({ localId, localNome, carro, motoristaId, motoristaNome });
 }`,
       },
     ],
