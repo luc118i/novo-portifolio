@@ -381,4 +381,54 @@ function salvarOcorrencia() {
       },
     ],
   },
+  {
+    id: "gerador-relatorios-operacionais",
+    title: "Gerador de Relatórios Operacionais (Full-Stack)",
+    shortDescription:
+      "Ecossistema para registro de ocorrências logísticas com geração automatizada de relatórios em PDF.",
+    description:
+      "Aplicação completa que permite o registro de eventos de campo, gestão de motoristas e a geração de documentos formais de descumprimento operacional.",
+    category: "featured",
+    image: "/projects/gerador-relatorios/cover.webp",
+    screenshots: [
+      "/projects/gerador-relatorios/01.webp",
+      "/projects/gerador-relatorios/02.webp",
+    ],
+    problem:
+      "Relatórios eram feitos manualmente, com erros frequentes de datas (fuso horário), falta de padrão visual e demora no processamento de evidências fotográficas.",
+    context:
+      "A operação precisava de uma ferramenta onde o motorista ou supervisor pudesse registrar uma parada fora do programado e, em segundos, exportar um PDF pronto para auditoria.",
+    solution:
+      "Desenvolvi um frontend em React com foco em UX (calendário inteligente) e uma API Node.js que utiliza Puppeteer para renderizar PDFs idênticos aos modelos físicos e Sharp para otimizar fotos de evidência.",
+    features: [
+      "Calendário com tratamento de fuso horário (UTC vs Local)",
+      "Geração de PDF via servidor com Puppeteer (layout fiel)",
+      "Upload e otimização de imagens de evidências (Sharp)",
+      "Integração em tempo real com Supabase",
+      "Listagem otimizada com TanStack Query para feedback instantâneo",
+    ],
+    benefits: [
+      "Eliminação de erros de data e dia da semana nos registros",
+      "Redução do tempo de geração de relatórios de minutos para segundos",
+      "Padronização total dos documentos entregues ao cliente final",
+    ],
+    stack: [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Express",
+      "Supabase",
+      "Puppeteer",
+      "Tailwind CSS",
+      "Date-fns",
+    ],
+    status: "Em produção",
+    role: "Full-stack (solo) – Arquitetura, API, Frontend e DevOps (Docker)",
+    links: [
+      {
+        label: "Repo",
+        href: "https://github.com/luc118i/Gerador-de-Relatorios-Operacionais-api",
+      },
+    ],
+  },
 ];
