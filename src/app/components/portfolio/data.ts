@@ -385,9 +385,9 @@ function salvarOcorrencia() {
     id: "gerador-relatorios-operacionais",
     title: "Gerador de Relatórios Operacionais (Full-Stack)",
     shortDescription:
-      "Ecossistema para registro de ocorrências logísticas com geração automatizada de relatórios em PDF.",
+      "Ecossistema completo para registro de ocorrências logísticas com IA, geração de PDF automatizada e integração com Google Drive.",
     description:
-      "Aplicação completa que permite o registro de eventos de campo, gestão de motoristas e a geração de documentos formais de descumprimento operacional.",
+      "Aplicação full-stack para registro de ocorrências de frota, gestão de motoristas e geração de laudos formais em PDF — com correção ortográfica por IA, sumarização automática, upload direto ao Google Drive e deploy containerizado.",
     category: "featured",
     image: "/projects/gerador-relatorios/cover.webp",
     screenshots: [
@@ -395,22 +395,31 @@ function salvarOcorrencia() {
       "/projects/gerador-relatorios/02.webp",
     ],
     problem:
-      "Relatórios eram feitos manualmente, com erros frequentes de datas (fuso horário), falta de padrão visual e demora no processamento de evidências fotográficas.",
+      "Relatórios eram feitos manualmente, com erros de data (fuso horário), texto sem padrão, fotos pesadas e entrega demorada ao cliente. Nenhum controle de motoristas por ocorrência.",
     context:
-      "A operação precisava de uma ferramenta onde o motorista ou supervisor pudesse registrar uma parada fora do programado e, em segundos, exportar um PDF pronto para auditoria.",
+      "A operação precisava registrar paradas não autorizadas, excessos de velocidade e outras infrações de campo e exportar um PDF formal em segundos — com evidências fotográficas embutidas e entrega automática ao Google Drive.",
     solution:
-      "Desenvolvi um frontend em React com foco em UX (calendário inteligente) e uma API Node.js que utiliza Puppeteer para renderizar PDFs idênticos aos modelos físicos e Sharp para otimizar fotos de evidência.",
+      "Desenvolvi um frontend React com editor rich-text (Tiptap) e uma API Node.js que usa Puppeteer para renderizar PDFs fiéis ao modelo físico, Sharp para comprimir imagens, Groq + LanguageTool para correção inteligente de texto e Google Drive API para entrega automatizada com lógica de upsert.",
     features: [
       "Calendário com tratamento de fuso horário (UTC vs Local)",
-      "Geração de PDF via servidor com Puppeteer (layout fiel)",
-      "Upload e otimização de imagens de evidências (Sharp)",
-      "Integração em tempo real com Supabase",
-      "Listagem otimizada com TanStack Query para feedback instantâneo",
+      "Editor rich-text (Tiptap) com cor, sublinhado e estilos — laudos com formatação profissional",
+      "Geração de PDF via Puppeteer com layout fiel ao modelo físico",
+      "Compressão automática de imagens de evidências com Sharp (1200px, 75% JPEG)",
+      "Pipeline de IA duplo: LanguageTool detecta erros → Groq LLaMA 3.3-70b corrige preservando HTML",
+      "Sumarização executiva automática da ocorrência via Groq (resumo de 3 frases para gestores)",
+      "Upload em lote para Google Drive via OAuth2 com upsert (sem duplicatas)",
+      "Cache de PDF com TTL e invalidação forçada (Supabase Storage + signed URLs)",
+      "CRUD de motoristas com snapshot por ocorrência (rastreabilidade histórica)",
+      "Listagem otimizada com TanStack Query e feedback instantâneo",
+      "Deploy containerizado com Docker + Chromium e fallback para Browserless.io",
     ],
     benefits: [
       "Eliminação de erros de data e dia da semana nos registros",
       "Redução do tempo de geração de relatórios de minutos para segundos",
       "Padronização total dos documentos entregues ao cliente final",
+      "Redação mais rápida com sumarização automática e correção ortográfica por IA",
+      "Entrega direta ao Google Drive sem passos manuais",
+      "Rastreabilidade completa de motoristas por ocorrência via snapshots",
     ],
     stack: [
       "React",
@@ -418,17 +427,115 @@ function salvarOcorrencia() {
       "Node.js",
       "Express",
       "Supabase",
+      "PostgreSQL",
       "Puppeteer",
+      "Sharp",
+      "Tiptap",
+      "TanStack Query",
+      "Groq API (LLaMA 3.3-70b)",
+      "LanguageTool API",
+      "Google Drive API",
+      "Zod",
       "Tailwind CSS",
-      "Date-fns",
+      "Docker",
     ],
     status: "Em produção",
-    role: "Full-stack (solo) – Arquitetura, API, Frontend e DevOps (Docker)",
+    role: "Full-stack (solo) – Arquitetura, API, Frontend, IA e DevOps (Docker)",
     links: [
       {
         label: "Repo",
         href: "https://github.com/luc118i/Gerador-de-Relatorios-Operacionais-api",
       },
     ],
+  },
+
+  {
+    id: "esquemas",
+    title: "BI Operacional — Esquemas e Ocorrências (Google Apps Script)",
+    shortDescription:
+      "Dashboard de BI construído sobre Google Sheets para monitorar ocorrências operacionais e acessar documentos de forma ágil.",
+    description:
+      "Sistema de Business Intelligence serverless desenvolvido em Google Apps Script para a operação de transporte da Viação Catedral. Consome dados diretamente de planilhas Google Sheets, exibe KPIs e gráficos em tempo real e permite busca inteligente de documentos no Google Drive — sem infraestrutura adicional.",
+    category: "automation",
+    image: PLACEHOLDER,
+    problem:
+      "A equipe operacional precisava de visibilidade sobre ocorrências (tipos, motoristas, bases, plantonistas) sem depender de ferramentas externas, exportações manuais ou acesso a sistemas complexos.",
+    context:
+      "O fluxo já acontecia em planilhas Google Sheets. A solução precisava ser embutida no mesmo ecossistema, com zero custo de infraestrutura e acesso imediato para todos os usuários da organização.",
+    solution:
+      "Desenvolvi um web app em Google Apps Script (HTMLService) que lê os dados da planilha de controle, consolida registros, exibe dashboards com Chart.js e oferece busca fuzzy de documentos no Google Drive por prefixo de arquivo.",
+    features: [
+      "Dashboard com KPIs e gráficos de ocorrências por tipo, base e motorista (Chart.js)",
+      "Filtros por intervalo de datas com atualização dinâmica",
+      "Busca inteligente de documentos no Google Drive com lazy-load e cache",
+      "Normalização fuzzy de nomes (acentos, caixa, espaços) para match tolerante",
+      "Registro de novas ocorrências direto pelo dashboard com merge de células",
+      "Mapeamento automático de bases para gestores responsáveis",
+      "Modo apresentação (tela cheia) para reuniões operacionais",
+      "Design dark com identidade visual da operação (Barlow, laranja #f47920)",
+    ],
+    benefits: [
+      "Zero infraestrutura adicional — roda 100% no ecossistema Google",
+      "Acesso imediato para toda a equipe sem instalação ou cadastro",
+      "Visibilidade em tempo real sobre o histórico de ocorrências",
+      "Busca de documentos sem sair da planilha",
+    ],
+    stack: [
+      "Google Apps Script",
+      "JavaScript",
+      "HTML5 / CSS3",
+      "Chart.js 4",
+      "Google Sheets API",
+      "Google Drive API",
+      "HTMLService",
+    ],
+    status: "Em produção",
+    role: "Automação operacional – Apps Script, BI, UI (dashboard/apresentação) e integração Google Drive",
+  },
+
+  {
+    id: "pc-nao-autorizado",
+    title: "BI de PCs Não Autorizados — Monitoramento de Conformidade",
+    shortDescription:
+      "Dashboard com mapa interativo para monitorar paradas em locais não autorizados da frota, com integração a Supabase e Google Sheets.",
+    description:
+      "Sistema de BI para controle de conformidade de frota, desenvolvido em Google Apps Script com visualização geoespacial via Leaflet.js. Agrega ocorrências históricas de paradas em locais não autorizados, exibe a distribuição por região e base em gráficos, e plota os pontos no mapa com coordenadas reais. Integra-se ao Supabase para retroalimentação de dados de viagens.",
+    category: "automation",
+    image: PLACEHOLDER,
+    problem:
+      "A operação não tinha visibilidade centralizada sobre onde e com que frequência os veículos paravam em locais proibidos (PCs não autorizados), dificultando ações corretivas e auditorias.",
+    context:
+      "Os registros existiam em planilhas, mas sem cruzamento geográfico, sem filtros por base/região e sem integração com os dados de viagem do sistema operacional (Supabase).",
+    solution:
+      "Desenvolvi um web app em Google Apps Script que agrega dados históricos de ocorrências, plota os PCs no mapa (Leaflet.js com coordenadas reais), exibe KPIs e gráficos por filtro (região, base, data) e sincroniza dados de linha/viagem via API Supabase.",
+    features: [
+      "Mapa interativo com marcadores georreferenciados dos PCs não autorizados (Leaflet.js)",
+      "Filtros por data, região, base operacional e local específico",
+      "KPIs e gráficos de ocorrências por base, tipo e estado/UF (Chart.js)",
+      "Formulário sidebar para registro de novas ocorrências com seleção de motorista e local",
+      "Integração com Supabase para retroalimentação de dados de viagem (trip_id, linha)",
+      "Webhook autenticado (token) para integração com sistemas externos",
+      "Normalização de nomes de base (acentos, sufixos como LTDA/FILIAL) para agrupamento consistente",
+      "Modo apresentação para reuniões de conformidade operacional",
+      "CRUD de motoristas com validação de matrícula e base",
+    ],
+    benefits: [
+      "Visibilidade geográfica real das infrações de parada da frota",
+      "Identificação rápida de padrões por base, região e período",
+      "Registro padronizado de ocorrências diretamente pelo dashboard",
+      "Cruzamento automático de dados de viagem via Supabase — rastreabilidade de linha e horário",
+    ],
+    stack: [
+      "Google Apps Script",
+      "JavaScript",
+      "HTML5 / CSS3",
+      "Chart.js 4",
+      "Leaflet.js 1.9",
+      "Supabase (REST API)",
+      "Google Sheets API",
+      "HTMLService",
+    ],
+    status: "Em produção",
+    role: "Automação operacional – Apps Script, BI geoespacial, UI (mapa/dashboard) e integração Supabase",
   },
 ];
