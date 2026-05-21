@@ -10,6 +10,8 @@ import { useAICases } from "./useAICases";
 import { useStudioOverrides } from "./useStudioOverrides";
 import { projects as staticProjects } from "../data";
 import { Project } from "../types";
+import publishedAI from "@/data/ai-projects.json";
+import publishedOverrides from "@/data/studio-overrides.json";
 
 // ─── Tipos ────────────────────────────────────────────────────
 type GHRepo = {
@@ -362,6 +364,26 @@ export function AIStudio({ onClose }: { onClose: () => void }) {
   const [filterText, setFilterText] = useState("");
   const [publishState, setPublishState] = useState<PublishState>("idle");
 
+  const pendingChanges = useMemo(() => {
+    const pubIds = new Set((publishedAI.projects as Project[]).map((p) => p.id));
+    const newProjects = cases.filter((c) => !pubIds.has(c.project.id));
+    const updatedProjects = cases.filter((c) => {
+      const pub = (publishedAI.projects as Project[]).find((p) => p.id === c.project.id);
+      return pub && JSON.stringify(pub) !== JSON.stringify(c.project);
+    });
+    const pubHidden = [...(publishedOverrides.hidden as string[])].sort().join(",");
+    const curHidden = [...overrides.hidden].sort().join(",");
+    const overridesChanged =
+      pubHidden !== curHidden ||
+      JSON.stringify(publishedOverrides.edits) !== JSON.stringify(overrides.edits);
+    return {
+      newCount: newProjects.length,
+      updatedCount: updatedProjects.length,
+      overridesChanged,
+      hasChanges: newProjects.length > 0 || updatedProjects.length > 0 || overridesChanged,
+    };
+  }, [cases, overrides]);
+
   const handlePublish = useCallback(async () => {
     if (!cases.length) return;
     setPublishState("loading");
@@ -537,31 +559,45 @@ export function AIStudio({ onClose }: { onClose: () => void }) {
                         className="w-full px-3 py-2 rounded-lg text-sm bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-[#C2A14D]/50"
                       />
 
-                      {cases.length > 0 && (
-                        <button
-                          onClick={handlePublish}
-                          disabled={publishState === "loading"}
-                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
-                          style={{
-                            background: publishState === "success" ? "rgba(52,211,153,0.12)" : publishState === "error" ? "rgba(248,113,113,0.12)" : "rgba(194,161,77,0.12)",
-                            border: `1px solid ${publishState === "success" ? "rgba(52,211,153,0.35)" : publishState === "error" ? "rgba(248,113,113,0.35)" : "rgba(194,161,77,0.3)"}`,
-                            color: publishState === "success" ? "#34d399" : publishState === "error" ? "#f87171" : "#C2A14D",
-                          }}
-                        >
-                          {publishState === "loading"
-                            ? <Loader2 className="w-4 h-4 animate-spin" />
-                            : publishState === "success" || publishState === "noop"
-                            ? <CheckCircle2 className="w-4 h-4" />
-                            : publishState === "error"
-                            ? <AlertCircle className="w-4 h-4" />
-                            : <GitBranch className="w-4 h-4" />}
-                          {publishState === "loading" ? "Publicando..."
-                            : publishState === "success" ? "Publicado! Vercel vai deployar em breve"
-                            : publishState === "noop" ? "Nenhuma alteração para publicar"
-                            : publishState === "error" ? "Erro ao publicar — tente novamente"
-                            : `Publicar ${cases.length} projeto${cases.length > 1 ? "s" : ""} IA no GitHub`}
-                        </button>
-                      )}
+                      {cases.length > 0 && (() => {
+                        const synced = publishState === "idle" && !pendingChanges.hasChanges;
+                        const parts: string[] = [];
+                        if (pendingChanges.newCount) parts.push(`${pendingChanges.newCount} novo${pendingChanges.newCount > 1 ? "s" : ""}`);
+                        if (pendingChanges.updatedCount) parts.push(`${pendingChanges.updatedCount} atualizado${pendingChanges.updatedCount > 1 ? "s" : ""}`);
+                        if (pendingChanges.overridesChanged) parts.push("visibilidade");
+
+                        const bg = publishState === "success" ? "rgba(52,211,153,0.12)"
+                          : publishState === "error" ? "rgba(248,113,113,0.12)"
+                          : synced ? "rgba(255,255,255,0.04)"
+                          : "rgba(194,161,77,0.12)";
+                        const border = publishState === "success" ? "rgba(52,211,153,0.35)"
+                          : publishState === "error" ? "rgba(248,113,113,0.35)"
+                          : synced ? "rgba(255,255,255,0.08)"
+                          : "rgba(194,161,77,0.3)";
+                        const color = publishState === "success" ? "#34d399"
+                          : publishState === "error" ? "#f87171"
+                          : synced ? "rgba(255,255,255,0.25)"
+                          : "#C2A14D";
+
+                        return (
+                          <button
+                            onClick={handlePublish}
+                            disabled={publishState === "loading" || synced}
+                            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all active:scale-95 disabled:cursor-not-allowed"
+                            style={{ background: bg, border: `1px solid ${border}`, color, cursor: synced ? "default" : "pointer" }}
+                          >
+                            {publishState === "loading" ? <Loader2 className="w-4 h-4 animate-spin" />
+                              : (publishState === "success" || synced) ? <CheckCircle2 className="w-4 h-4" />
+                              : publishState === "error" ? <AlertCircle className="w-4 h-4" />
+                              : <GitBranch className="w-4 h-4" />}
+                            {publishState === "loading" ? "Publicando..."
+                              : publishState === "success" ? "Publicado! Vercel vai deployar em breve"
+                              : publishState === "error" ? "Erro ao publicar — tente novamente"
+                              : synced ? "Tudo sincronizado"
+                              : `Publicar — ${parts.join(", ")}`}
+                          </button>
+                        );
+                      })()}
 
                       <div className="space-y-2">
                         {visibleProjects.map((p) => (
