@@ -1,4 +1,7 @@
 {
-  "hidden": [],
+  "hidden": [
+    "painel-operacional",
+    "gerador-relatorios-operacionais"
+  ],
   "edits": {}
 }
