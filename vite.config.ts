@@ -15,13 +15,25 @@ const studioPublishPlugin = {
       req.on("end", () => {
         res.setHeader("Content-Type", "application/json");
         try {
-          const { projects } = JSON.parse(body) as { projects: unknown[] };
-          const filePath = resolve(__dirname, "src/data/ai-projects.json");
-          writeFileSync(filePath, JSON.stringify({ projects }, null, 2));
+          const { projects, overrides } = JSON.parse(body) as {
+            projects: unknown[];
+            overrides: { hidden: string[]; edits: Record<string, unknown> };
+          };
 
-          execSync("git add src/data/ai-projects.json", { cwd: __dirname });
-          const diff = execSync("git status --porcelain src/data/ai-projects.json", { cwd: __dirname })
-            .toString().trim();
+          writeFileSync(
+            resolve(__dirname, "src/data/ai-projects.json"),
+            JSON.stringify({ projects }, null, 2)
+          );
+          writeFileSync(
+            resolve(__dirname, "src/data/studio-overrides.json"),
+            JSON.stringify(overrides, null, 2)
+          );
+
+          execSync("git add src/data/ai-projects.json src/data/studio-overrides.json", { cwd: __dirname });
+          const diff = execSync(
+            "git status --porcelain src/data/ai-projects.json src/data/studio-overrides.json",
+            { cwd: __dirname }
+          ).toString().trim();
 
           if (!diff) { res.end(JSON.stringify({ ok: true, noop: true })); return; }
 

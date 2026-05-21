@@ -2,6 +2,7 @@ import { Project } from "./types";
 import { PROJECT_OVERRIDES } from "./overrides";
 import githubData from "@/data/github-projects.json";
 import aiProjectsRaw from "@/data/ai-projects.json";
+import studioOverridesRaw from "@/data/studio-overrides.json";
 
 // Projetos sem repo público — dados completos definidos em overrides.ts
 const LOCAL_ONLY_IDS = [
@@ -50,6 +51,13 @@ const aiProjects: Project[] = (aiProjectsRaw.projects as Project[]).filter(
   (p) => !staticIds.has(p.id)
 );
 
-export const projects: Project[] = [...githubMerged, ...localProjects, ...aiProjects].sort(
-  (a, b) => (ORDER[a.category] ?? 9) - (ORDER[b.category] ?? 9)
-);
+const studioHidden = new Set<string>((studioOverridesRaw as { hidden: string[]; edits: Record<string, Partial<Project>> }).hidden);
+const studioEdits = (studioOverridesRaw as { hidden: string[]; edits: Record<string, Partial<Project>> }).edits;
+
+export const projects: Project[] = [...githubMerged, ...localProjects, ...aiProjects]
+  .filter((p) => !studioHidden.has(p.id))
+  .map((p) => {
+    const edit = studioEdits[p.id];
+    return edit ? { ...p, ...edit } : p;
+  })
+  .sort((a, b) => (ORDER[a.category] ?? 9) - (ORDER[b.category] ?? 9));

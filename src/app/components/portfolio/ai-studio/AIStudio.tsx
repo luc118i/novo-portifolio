@@ -369,7 +369,10 @@ export function AIStudio({ onClose }: { onClose: () => void }) {
       const res = await fetch("/api/studio/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ projects: cases.map((c) => c.project) }),
+        body: JSON.stringify({
+          projects: cases.map((c) => c.project),
+          overrides: { hidden: overrides.hidden, edits: overrides.edits },
+        }),
       });
       const data = await res.json() as { ok?: boolean; noop?: boolean; error?: string };
       if (!res.ok) throw new Error(data.error ?? "Erro desconhecido");
