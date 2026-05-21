@@ -64,8 +64,10 @@ function useStudioAccess() {
 function useAllProjects(): Project[] {
   const { cases } = useAICases();
   const { overrides } = useStudioOverrides();
-  const aiProjects: Project[] = cases.map((c) => c.project);
-  return [...staticProjects, ...aiProjects]
+  // AI cases do localStorage que ainda não foram publicados no JSON
+  const staticIds = new Set(staticProjects.map((p) => p.id));
+  const localOnlyAI = cases.map((c) => c.project).filter((p) => !staticIds.has(p.id));
+  return [...staticProjects, ...localOnlyAI]
     .filter((p) => !overrides.hidden.includes(p.id))
     .map((p) => {
       const edit = overrides.edits[p.id];

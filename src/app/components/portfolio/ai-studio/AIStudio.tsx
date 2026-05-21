@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import {
   X, Github, Star, Code2, Sparkles, CheckCircle2,
   Loader2, AlertCircle, Trash2, RefreshCw, BookOpen,
-  Pencil, EyeOff, RotateCcw, ChevronDown, ChevronUp,
+  Pencil, EyeOff, RotateCcw, ChevronDown, ChevronUp, GitBranch,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { fetchRepoContext, generateCaseStudy } from "./groq";
@@ -29,6 +29,7 @@ type GenPhase =
   | { type: "error"; message: string };
 
 type Tab = "projects" | "generate";
+type PublishState = "idle" | "loading" | "success" | "noop" | "error";
 
 const GITHUB_USER = import.meta.env.VITE_GITHUB_USER ?? "luc118i";
 
@@ -359,6 +360,26 @@ export function AIStudio({ onClose }: { onClose: () => void }) {
   const [tab, setTab] = useState<Tab>("projects");
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [filterText, setFilterText] = useState("");
+  const [publishState, setPublishState] = useState<PublishState>("idle");
+
+  const handlePublish = useCallback(async () => {
+    if (!cases.length) return;
+    setPublishState("loading");
+    try {
+      const res = await fetch("/api/studio/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ projects: cases.map((c) => c.project) }),
+      });
+      const data = await res.json() as { ok?: boolean; noop?: boolean; error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Erro desconhecido");
+      setPublishState(data.noop ? "noop" : "success");
+    } catch {
+      setPublishState("error");
+    } finally {
+      setTimeout(() => setPublishState("idle"), 5000);
+    }
+  }, [cases]);
 
   // Estado de geração
   const [repos, setRepos] = useState<GHRepo[]>([]);
@@ -512,6 +533,32 @@ export function AIStudio({ onClose }: { onClose: () => void }) {
                         onChange={(e) => setFilterText(e.target.value)}
                         className="w-full px-3 py-2 rounded-lg text-sm bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-[#C2A14D]/50"
                       />
+
+                      {cases.length > 0 && (
+                        <button
+                          onClick={handlePublish}
+                          disabled={publishState === "loading"}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium cursor-pointer transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                          style={{
+                            background: publishState === "success" ? "rgba(52,211,153,0.12)" : publishState === "error" ? "rgba(248,113,113,0.12)" : "rgba(194,161,77,0.12)",
+                            border: `1px solid ${publishState === "success" ? "rgba(52,211,153,0.35)" : publishState === "error" ? "rgba(248,113,113,0.35)" : "rgba(194,161,77,0.3)"}`,
+                            color: publishState === "success" ? "#34d399" : publishState === "error" ? "#f87171" : "#C2A14D",
+                          }}
+                        >
+                          {publishState === "loading"
+                            ? <Loader2 className="w-4 h-4 animate-spin" />
+                            : publishState === "success" || publishState === "noop"
+                            ? <CheckCircle2 className="w-4 h-4" />
+                            : publishState === "error"
+                            ? <AlertCircle className="w-4 h-4" />
+                            : <GitBranch className="w-4 h-4" />}
+                          {publishState === "loading" ? "Publicando..."
+                            : publishState === "success" ? "Publicado! Vercel vai deployar em breve"
+                            : publishState === "noop" ? "Nenhuma alteração para publicar"
+                            : publishState === "error" ? "Erro ao publicar — tente novamente"
+                            : `Publicar ${cases.length} projeto${cases.length > 1 ? "s" : ""} IA no GitHub`}
+                        </button>
+                      )}
 
                       <div className="space-y-2">
                         {visibleProjects.map((p) => (
