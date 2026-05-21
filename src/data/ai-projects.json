@@ -1,1 +1,189 @@
-{ "projects": [] }
+{
+  "projects": [
+    {
+      "id": "github-job-frontend",
+      "repo": "github_job_frontend",
+      "repoUrl": "https://github.com/luc118i/github_job_frontend",
+      "updatedAt": "2026-05-16T14:13:24Z",
+      "links": [
+        {
+          "label": "Repo",
+          "href": "https://github.com/luc118i/github_job_frontend"
+        }
+      ],
+      "image": "/placeholders/cover.webp",
+      "screenshots": [],
+      "features": [
+        "Busca de vagas por perfil GitHub",
+        "Busca de vagas por perfil profissional do LinkedIn",
+        "Preferências de busca personalizadas",
+        "Histórico de vagas encontradas",
+        "Geração de currículos personalizados em formato PDF",
+        "Instalação como PWA",
+        "Autenticação e autorização de usuários"
+      ],
+      "benefits": [
+        "Melhoria na eficiência da busca por vagas",
+        "Aumento da precisão na busca por vagas compatíveis",
+        "Redução do tempo gasto na busca por vagas",
+        "Melhoria na experiência do usuário",
+        "Aumento da satisfação dos usuários"
+      ],
+      "stack": [
+        "React",
+        "Vite",
+        "TypeScript",
+        "React PDF",
+        "React Markdown",
+        "Vite PWA"
+      ],
+      "problem": "Muitos profissionais enfrentam dificuldades em encontrar vagas que sejam compatíveis com suas habilidades e experiências. Além disso, a busca por vagas pode ser um processo demorado e ineficiente. O aplicativo resolve esse problema fornecendo uma solução personalizada e eficiente para busca de vagas.",
+      "context": "O aplicativo foi criado para atender às necessidades de profissionais que buscam vagas compatíveis com suas habilidades e experiências. Foi desenvolvido utilizando tecnologias de ponta e seguindo as melhores práticas de desenvolvimento de software.",
+      "solution": "O aplicativo utiliza uma arquitetura de microserviços para integrar os perfis GitHub e LinkedIn, permitindo uma busca personalizada e eficiente de vagas. Além disso, o aplicativo utiliza tecnologias como React PDF para gerar currículos personalizados em formato PDF.",
+      "title": "Desenvolvedor de Aplicativo de Busca de Vagas Profissionais",
+      "shortDescription": "Aplicativo React + Vite para busca de vagas compatíveis com perfis GitHub e LinkedIn",
+      "description": "O aplicativo é uma solução inovadora que integra perfis GitHub e LinkedIn para buscar vagas compatíveis com as habilidades e experiências dos usuários. Utiliza tecnologias como React, Vite, TypeScript e React PDF para fornecer uma experiência de usuário personalizada e eficiente.",
+      "category": "featured",
+      "status": "Concluído",
+      "role": "Desenvolvedor Full-stack"
+    },
+    {
+      "id": "github-job-backend",
+      "repo": "github_job_backend",
+      "repoUrl": "https://github.com/luc118i/github_job_backend",
+      "updatedAt": "2026-05-16T15:25:42Z",
+      "links": [
+        {
+          "label": "Repo",
+          "href": "https://github.com/luc118i/github_job_backend"
+        }
+      ],
+      "image": "/placeholders/cover.webp",
+      "screenshots": [],
+      "features": [
+        "Autenticação por e-mail e senha com JWT",
+        "Importação de dados do LinkedIn por PDF ou ZIP",
+        "Busca de vagas por perfil GitHub",
+        "Busca de vagas por histórico profissional do LinkedIn",
+        "Ranqueamento e enriquecimento de vagas com inteligência artificial",
+        "Geração de currículos em Markdown para vagas específicas",
+        "Armazenamento de dados dos usuários e das vagas no Supabase"
+      ],
+      "benefits": [
+        "Melhoria na eficiência da busca de vagas de emprego",
+        "Aumento da precisão na compatibilidade entre vagas e candidatos",
+        "Redução do tempo gasto na criação de currículos personalizados",
+        "Fornecimento de uma ferramenta para empresas para encontrar os melhores candidatos",
+        "Melhoria na experiência do usuário com a utilização de inteligência artificial"
+      ],
+      "stack": [
+        "Node.js",
+        "Express",
+        "TypeScript",
+        "Supabase",
+        "Anthropic Claude",
+        "Google Gemini",
+        "Adzuna"
+      ],
+      "problem": "O problema que este projeto resolve é a dificuldade de encontrar vagas de emprego compatíveis com as habilidades e experiências dos candidatos, além da necessidade de criar currículos personalizados para cada vaga. Além disso, a busca de vagas pode ser um processo demorado e trabalhoso, especialmente quando se considera a grande quantidade de vagas disponíveis online.",
+      "context": "O projeto foi criado para atender à demanda de candidatos que buscam vagas de emprego compatíveis com suas habilidades e experiências, além de fornecer uma ferramenta para empresas que desejam encontrar os melhores candidatos para suas vagas. O projeto foi desenvolvido utilizando tecnologias como Node.js, Express, TypeScript, Supabase e Anthropic Claude.",
+      "solution": "A solução foi desenvolvida utilizando uma arquitetura de microserviços, com a API em Node.js e Express responsável por receber as requisições e enviar as respostas. A inteligência artificial foi utilizada para ranquear as vagas e gerar currículos personalizados, utilizando a API Anthropic Claude. Além disso, a API também utiliza o Supabase para armazenar os dados dos usuários e das vagas.",
+      "title": "Desenvolvedor de API de Buscador de Vagas com Inteligência Artificial",
+      "shortDescription": "API em Node.js para busca de vagas compatíveis com perfis do GitHub e LinkedIn, utilizando inteligência artificial para ranqueamento e geração de currículos",
+      "description": "O projeto consiste em uma API em Node.js, Express e TypeScript, que busca vagas compatíveis com perfis do GitHub e LinkedIn, utilizando inteligência artificial para ranqueamento e geração de currículos em Markdown. A API também permite a importação de dados do LinkedIn por PDF ou ZIP e a geração de currículos personalizados para vagas específicas.",
+      "category": "featured",
+      "status": "Concluído",
+      "role": "Desenvolvedor Full-stack"
+    },
+    {
+      "id": "rizer-agent",
+      "repo": "rizer-agent",
+      "repoUrl": "https://github.com/luc118i/rizer-agent",
+      "updatedAt": "2026-05-20T15:51:15Z",
+      "links": [
+        {
+          "label": "Repo",
+          "href": "https://github.com/luc118i/rizer-agent"
+        }
+      ],
+      "image": "/placeholders/cover.webp",
+      "screenshots": [],
+      "features": [
+        "Execução automática de tarefas pré-definidas",
+        "Integração com diferentes sistemas e tecnologias",
+        "Interface de usuário intuitiva para configuração e monitoramento",
+        "Suporte a múltiplos formatos de dados",
+        "Mecanismo de erro e tratamento de exceções",
+        "Suporte a atualizações e manutenção remota",
+        "Autenticação e autorização de acesso"
+      ],
+      "benefits": [
+        "Redução do tempo gasto em tarefas manuais",
+        "Aumento da produtividade e eficiência",
+        "Melhoria da precisão e redução de erros",
+        "Custo reduzido com mão de obra e infraestrutura",
+        "Melhoria da escalabilidade e flexibilidade dos processos"
+      ],
+      "stack": [
+        "TypeScript",
+        "HTML"
+      ],
+      "problem": "Muitas empresas enfrentam o desafio de realizar tarefas repetitivas e demoradas, o que pode levar a erros e perda de produtividade. Além disso, a falta de automação pode resultar em custos elevados e baixa eficiência. O projeto rizer-agent busca resolver esse problema criando uma solução de automação que seja fácil de implementar e manter",
+      "context": "O projeto foi criado para atender às necessidades de empresas que buscam melhorar a eficiência de seus processos. Com a crescente demanda por soluções de automação, o rizer-agent se posiciona como uma opção viável para empresas de diferentes setores",
+      "solution": "A solução foi desenvolvida utilizando TypeScript e HTML, permitindo a criação de um agente de automação flexível e escalável. A arquitetura do projeto é baseada em componentes modulares, o que facilita a manutenção e atualização da solução. Além disso, a utilização de tecnologias como TypeScript permite a criação de código mais robusto e seguro",
+      "title": "Agente de Automação de Processos",
+      "shortDescription": "Solução de automação de processos para melhorar a eficiência de tarefas repetitivas",
+      "description": "O projeto rizer-agent visa criar um agente de automação que execute tarefas pré-definidas de forma autônoma, utilizando linguagens como TypeScript e HTML. A solução é projetada para ser escalável e flexível, permitindo a integração com diferentes sistemas e tecnologias. Com isso, o objetivo é reduzir o tempo gasto em tarefas manuais e aumentar a produtividade",
+      "category": "automation",
+      "status": "Concluído",
+      "role": "Desenvolvedor Full-stack"
+    },
+    {
+      "id": "gerador-de-relatorios-operacionais-app",
+      "repo": "Gerador-de-Relatorios-Operacionais-APP",
+      "repoUrl": "https://github.com/luc118i/Gerador-de-Relatorios-Operacionais-APP",
+      "updatedAt": "2026-05-21T14:34:45Z",
+      "links": [
+        {
+          "label": "Repo",
+          "href": "https://github.com/luc118i/Gerador-de-Relatorios-Operacionais-APP"
+        }
+      ],
+      "image": "/placeholders/cover.webp",
+      "screenshots": [],
+      "features": [
+        "Geração de relatórios operacionais personalizados",
+        "Registro e visualização de ocorrências diárias de motoristas e frotas",
+        "Interface de usuário intuitiva e eficiente",
+        "Arquitetura modular para fácil manutenção e escalabilidade",
+        "Integração com tecnologias como React e TanStack Query",
+        "Geração de relatórios em formato PDF",
+        "Lógica de negócios personalizada para geração de relatórios"
+      ],
+      "benefits": [
+        "Melhoria da eficiência e precisão na geração de relatórios operacionais",
+        "Redução do tempo e esforço necessário para registrar e visualizar ocorrências diárias",
+        "Redução de erros e inconsistências nos relatórios",
+        "Melhoria da tomada de decisões com relatórios personalizados e precisos",
+        "Escalabilidade e flexibilidade para atender às necessidades específicas das empresas"
+      ],
+      "stack": [
+        "TypeScript",
+        "React",
+        "Vite",
+        "TanStack Query",
+        "Tailwind CSS",
+        "Lucide React"
+      ],
+      "problem": "O sistema resolve o problema da falta de eficiência e precisão na geração de relatórios operacionais, além de reduzir o tempo e esforço necessário para registrar e visualizar ocorrências diárias de motoristas e frotas. Além disso, o sistema ajuda a reduzir erros e inconsistências nos relatórios, melhorando a tomada de decisões",
+      "context": "O sistema foi desenvolvido para atender às necessidades de empresas de logística e transporte, que precisam de um sistema eficiente e personalizado para gerenciar suas operações diárias. O sistema foi criado para ser escalável e flexível, permitindo que as empresas o adaptem às suas necessidades específicas",
+      "solution": "O sistema utiliza uma arquitetura modular, com camadas separadas para API, aplicação, domínio e recursos compartilhados. Isso permite uma fácil manutenção e escalabilidade do sistema. Além disso, o sistema utiliza tecnologias como React e TanStack Query para fornecer uma interface de usuário intuitiva e eficiente. A geração de relatórios operacionais é feita utilizando uma lógica de negócios personalizada, que permite a criação de relatórios personalizados e automatizados",
+      "title": "Sistema de Geração de Relatórios Operacionais para Otimização Logística",
+      "shortDescription": "Sistema desenvolvido para facilitar o registro, visualização e geração de documentos PDF baseados em ocorrências diárias de motoristas e frotas",
+      "description": "O sistema utiliza tecnologias como React, TypeScript e TanStack Query para fornecer uma interface de usuário intuitiva e eficiente. A arquitetura modular do sistema permite uma fácil manutenção e escalabilidade. O sistema é capaz de gerar relatórios operacionais personalizados e automatizar processos logísticos",
+      "category": "featured",
+      "status": "Concluído",
+      "role": "Full-stack solo"
+    }
+  ]
+}
