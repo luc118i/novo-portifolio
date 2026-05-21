@@ -25,7 +25,7 @@ const studioPublishPlugin = {
 
           if (!diff) { res.end(JSON.stringify({ ok: true, noop: true })); return; }
 
-          execSync('git commit -m "studio: publica projetos gerados por IA"', { cwd: __dirname });
+          execSync('git commit -m "atualizando projetos"', { cwd: __dirname });
           execSync("git push origin main", { cwd: __dirname });
           res.end(JSON.stringify({ ok: true }));
         } catch (e) {
