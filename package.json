@@ -7,7 +7,7 @@
     "fetch:github": "node scripts/fetch-github-projects.mjs",
     "fetch:github:force": "node scripts/fetch-github-projects.mjs --force",
     "dev": "npm run fetch:github && vite",
-    "build": "npm run fetch:github:force && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
