@@ -1,0 +1,132 @@
+{
+  "generated": "2026-05-21T17:14:32.426Z",
+  "projects": [
+    {
+      "id": "gerador-relatorios-operacionais",
+      "category": "featured",
+      "status": "Em produção",
+      "role": "Full-stack (solo) – Arquitetura, API, Frontend, IA e DevOps (Docker)",
+      "repo": "luc118i/Gerador-de-Relatorios-Operacionais-api",
+      "repoUrl": "https://github.com/luc118i/Gerador-de-Relatorios-Operacionais-api",
+      "stars": 0,
+      "updatedAt": "2026-05-20T15:22:53Z",
+      "title": "Gerador de Relatórios Operacionais — API",
+      "shortDescription": "API para geração de relatórios operacionais",
+      "description": "API para geração de relatórios operacionais",
+      "problem": "",
+      "context": "API REST construída com Node.js e TypeScript para registro e acompanhamento de ocorrências operacionais em frotas de transporte público. A plataforma automatiza a geração de relatórios em PDF, integra análise de texto por IA e envia documentos diretamente ao Google Drive.",
+      "solution": "O projeto segue uma arquitetura modular orientada a domínios com separação clara entre camadas:\nPadrão de cada módulo: → → → Supabase",
+      "usage": "Node.js 20+\nArquivo configurado (veja abaixo)",
+      "features": [
+        "Registro de ocorrências com validação de dados, vínculos de motoristas e snapshots históricos",
+        "Geração de PDF via Puppeteer com suporte a múltiplos templates, cabeçalho/rodapé e imagens embutidas",
+        "Análise por IA — correção ortográfica (Groq LLaMA 3.3 70B + LanguageTool) e sumarização de relatos",
+        "Gestão de evidências com otimização automática de imagens (Sharp) e URLs assinadas (Supabase Storage)",
+        "Exportação para Google Drive via integração com a API do Google",
+        "Notificações em tempo real via Google Apps Script para atualização de planilhas",
+        "Geração híbrida de PDF — Chrome local para PDFs pequenos, Browserless remoto para volumes maiores"
+      ],
+      "benefits": [],
+      "stack": [
+        "Node.js 20+",
+        "TypeScript 5.9",
+        "Express 5",
+        "Zod",
+        "Supabase (PostgreSQL + Storage)",
+        "Puppeteer",
+        "Browserless",
+        "Sharp",
+        "Google Drive API",
+        "Google Apps Script",
+        "Groq SDK",
+        "LanguageTool",
+        "Docker"
+      ],
+      "readme": "<div align=\"center\">\n\n# Gerador de Relatórios Operacionais — API\n\n**Backend para gestão de ocorrências operacionais, geração de PDF e análise assistida por IA.**\n\n[![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)\n[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)\n[![Express](https://img.shields.io/badge/Express-5-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com)\n[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3FCF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)\n[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com)\n\n</div>\n\n---\n\n## Sobre o projeto\n\nAPI REST construída com Node.js e TypeScript para registro e acompanhamento de ocorrências operacionais em frotas de transporte público. A plataforma automatiza a geração de relatórios em PDF, integra análise de texto por IA e envia documentos diretamente ao Google Drive.\n\n---\n\n## Funcionalidades\n\n- **Registro de ocorrências** com validação de dados, vínculos de motoristas e snapshots históricos\n- **Geração de PDF** via Puppeteer com suporte a múltiplos templates, cabeçalho/rodapé e imagens embutidas\n- **Análise por IA** — correção ortográfica (Groq LLaMA 3.3 70B + LanguageTool) e sumarização de relatos\n- **Gestão de evidências** com otimização automática de imagens (Sharp) e URLs assinadas (Supabase Storage)\n- **Exportação para Google Drive** via integração com a API do Google\n- **Notificações em tempo real** via Google Apps Script para atualização de planilhas\n- **Geração híbrida de PDF** — Chrome local para PDFs pequenos, Browserless remoto para volumes maiores\n\n---\n\n## Stack de tecnologias\n\n**Runtime e linguagem**\n- Node.js 20+ · TypeScript 5.9\n\n**Framework e validação**\n- Express 5 · Zod\n\n**Banco de dados e armazenamento**\n- Supabase (PostgreSQL + Storage)\n\n**Geração de documentos**\n- Puppeteer · Browserless · Sharp\n\n**Integrações externas**\n- Google Drive API · Google Apps Script · Groq SDK · LanguageTool\n\n**Infraestrutura**\n- Docker\n\n---\n\n## Arquitetura\n\nO projeto segue uma arquitetura modular orientada a domínios com separação clara entre camadas:\n\n```\nsrc/\n├── core/\n│   ├── config/       # Variáveis de ambiente e cliente Supabase\n│   ├── http/         # App Express, roteador central e handler de erros\n│   └── infra/        # Serviços de infraestrutura (Apps Script)\n│\n├── modules/\n│   ├── occurrences/  # Ocorrências — regras de negócio, repositório e rotas\n│   ├── reports/      # Relatórios diários e geração de PDF\n│   │   └── pdf/      # Puppeteer, templates, storage e Drive\n│   ├── drivers/      # Cadastro e gestão de motoristas\n│   ├── evidences/    # Upload, otimização e metadados de evidências\n│   ├── trips/        # Linhas e viagens\n│   ├── locais/       # Locais de ocorrência\n│   └── ai/           # Correção e sumarização por IA\n│\n├── validators/       # Schemas Zod reutilizáveis\n└── index.ts          # Ponto de entrada\n```\n\n**Padrão de cada módulo:** `routes` → `service` → `repo` → Supabase\n\n---\n\n## Como executar\n\n### Pré-requisitos\n\n- Node.js 20+\n- Arquivo `.env` configurado (veja abaixo)\n\n### Variáveis de ambiente\n\n```env\nPORT=3333\nSUPABASE_URL=\nSUPABASE_SERVICE_ROLE_KEY=\nGOOGLE_SERVICE_ACCOUNT_JSON=\nGROQ_API_KEY=\nAPPS_SCRIPT_URL=\nBROWSERLESS_URL=          # opcional\n```\n\n### Instalação e desenvolvimento\n\n```bash\nnpm install\nnpm run dev\n```\n\n### Build e produção\n\n```bash\nnpm run build\nnpm start\n```\n\n### Docker\n\n```bash\ndocker build -t gerador-relatorios-api .\ndocker run -p 3333:3333 --env-file .env gerador-relatorios-api\n```\n\n---\n\n## Endpoints\n\n<details>\n<summary><strong>Status</strong></summary>\n\n| Método | Rota | Descrição |\n|--------|------|-----------|\n| `GET` | `/` | Informações da API |\n| `GET` | `/health` | Health check |\n\n</details>\n\n<details>\n<summary><strong>Ocorrências</strong></summary>\n\n| Método | Rota | Descrição |\n|--------|------|-----------|\n| `GET` | `/occurrences?date=YYYY-MM-DD` | Lista ocorrências do dia |\n| `POST` | `/occurrences` | Cria ocorrência |\n| `GET` | `/occurrences/:id` | Busca ocorrência |\n| `PUT` | `/occurrences/:id` | Atualiza ocorrência |\n| `DELETE` | `/occurrences/:id` | Remove ocorrência |\n\n</details>\n\n<details>\n<summary><strong>Evidências</strong></summary>\n\n| Método | Rota | Descrição |\n|--------|------|-----------|\n| `POST` | `/occurrences/:id/evidences` | Upload de evidências (até 30 arquivos) |\n| `GET` | `/occurrences/:id/evidences` | Lista evidências |\n| `GET` | `/occurrences/:id/evidences/signed-urls` | URLs de acesso temporário |\n| `PATCH` | `/occurrences/:id/evidences/:evidenceId` | Atualiza metadados |\n\n</details>\n\n<details>\n<summary><strong>Relatórios e PDF</strong></summary>\n\n| Método | Rota | Descrição |\n|--------|------|-----------|\n| `GET` | `/reports/daily?date=YYYY-MM-DD` | Relatório diário consolidado |\n| `GET` | `/reports/occurrences/:id/pdf` | Gera PDF da ocorrência |\n| `POST` | `/reports/occurrences/:id/drive` | Exporta PDF para o Google Drive |\n\n</details>\n\n<details>\n<summary><strong>Cadastros auxiliares</strong></summary>\n\n| Método | Rota | Descrição |\n|--------|------|-----------|\n| `GET` | `/drivers` | Lista motoristas |\n| `POST` | `/drivers` | Cadastra motorista |\n| `PATCH` | `/drivers/:id` | Atualiza motorista |\n| `DELETE` | `/drivers/:id` | Remove motorista |\n| `GET` | `/trips` | Lista viagens |\n| `POST` | `/trips` | Cadastra viagem |\n| `GET` | `/locais` | Lista locais |\n\n</details>\n\n<details>\n<summary><strong>IA</strong></summary>\n\n| Método | Rota | Descrição |\n|--------|------|-----------|\n| `POST` | `/ai/correct` | Corrige texto de ocorrência |\n| `POST` | `/ai/summarize` | Gera resumo executivo |\n\n</details>\n\n---\n\n## Destaques de implementação\n\n**Geração de PDF híbrida**\nPDFs são renderizados localmente via Puppeteer. Para arquivos acima de 1 MB, a geração é delegada a uma instância Browserless remota, evitando sobrecarga de memória no servidor.\n\n**Pipeline de IA**\nO texto de um relato passa por detecção de erros via LanguageTool antes de ser enviado ao Groq (LLaMA 3.3 70B), reduzindo tokens consumidos e aumentando a precisão da correção. A sumarização usa temperatura baixa (0.3) para respostas objetivas.\n\n**Snapshots de motoristas**\nAo vincular um motorista a uma ocorrência, um trigger de banco cria um snapshot imutável dos dados do motorista naquele momento, garantindo integridade histórica dos relatórios.\n\n**Tratamento centralizado de erros**\nUm único middleware converte erros do Zod, erros de domínio (`AppError`) e códigos de erro do PostgreSQL (23505, 23503, PGRST116) em respostas HTTP padronizadas.\n\n**Otimização de evidências**\nImagens enviadas são redimensionadas para até 1200px e recomprimidas em JPEG (75–80% de qualidade) antes do armazenamento, equilibrando qualidade e custo de storage.\n",
+      "links": [
+        {
+          "label": "Repo",
+          "href": "https://github.com/luc118i/Gerador-de-Relatorios-Operacionais-api"
+        }
+      ]
+    },
+    {
+      "id": "minimal-api-architecture",
+      "category": "architecture",
+      "status": "Concluído",
+      "role": "Projeto de estudo focado em arquitetura backend",
+      "repo": "luc118i/minimal-api",
+      "repoUrl": "https://github.com/luc118i/minimal-api",
+      "stars": 0,
+      "updatedAt": "2025-02-13T23:55:17Z",
+      "title": "API de Gerenciamento de Administradores e Veículos",
+      "shortDescription": "Essa API é um sistema que gerencia administradores e veículos. Ela permite que administradores façam login e obtenham um token de acesso (JWT), garantindo segurança. Com esse token, eles podem:",
+      "description": "Essa API é um sistema que gerencia administradores e veículos. Ela permite que administradores façam login e obtenham um token de acesso (JWT), garantindo segurança. Com esse token, eles podem:",
+      "problem": "",
+      "context": "Gerenciar administradores e veículos, permitindo operações CRUD (Create, Read, Update, Delete).",
+      "solution": "",
+      "usage": "",
+      "features": [
+        "Implementação de JWT para autenticação de usuários.",
+        "Proteção de rotas com diferentes perfis de acesso (Administrador, Editor).",
+        "Login de administradores com geração de token JWT.",
+        "Cadastro, listagem, edição e exclusão de administradores.",
+        "Cadastro, listagem, edição e exclusão de veículos.",
+        "Validação de dados (exemplo: ano mínimo permitido para veículos).",
+        "Utilização do Entity Framework Core para comunicação com um banco de dados SQL Server.",
+        "Swagger (OpenAPI) configurado para facilitar o uso e testes da API."
+      ],
+      "benefits": [],
+      "stack": [
+        "C# e ASP.NET Core (Minimal API)",
+        "JWT (JSON Web Token) para autenticação",
+        "Entity Framework Core para acesso ao banco de dados",
+        "SQL Server como banco de dados",
+        "Swagger para documentação"
+      ],
+      "readme": "Essa API é um sistema que gerencia administradores e veículos. Ela permite que administradores façam login e obtenham um token de acesso (JWT), garantindo segurança. Com esse token, eles podem:\n\n- Criar, listar, editar e excluir administradores e veículos.\n- Controlar permissões para que apenas usuários autorizados possam acessar certas funções.\n- Usar um banco de dados SQL Server para armazenar as informações.\n\nResumindo, é uma API segura para gerenciar usuários e veículos, com autenticação e autorização.\n\n# API de Gerenciamento de Administradores e Veículos\n\nEsta API foi desenvolvida utilizando **C# com ASP.NET Core** e segue o modelo de uma **Minimal API**. A API implementa **autenticação e autorização baseadas em JWT (JSON Web Token)**, garantindo controle de acesso seguro.\n\n## 📌 Objetivo da API\nGerenciar **administradores e veículos**, permitindo operações CRUD (Create, Read, Update, Delete).\n\n## 🚀 Funcionalidades Principais\n\n### ✅ Autenticação e Autorização\n- Implementação de **JWT** para autenticação de usuários.\n- Proteção de rotas com diferentes **perfis de acesso** (Administrador, Editor).\n\n### ✅ Gerenciamento de Administradores\n- Login de administradores com geração de **token JWT**.\n- Cadastro, listagem, edição e exclusão de administradores.\n\n### ✅ Gerenciamento de Veículos\n- Cadastro, listagem, edição e exclusão de veículos.\n- Validação de dados (exemplo: ano mínimo permitido para veículos).\n\n### ✅ Banco de Dados\n- Utilização do **Entity Framework Core** para comunicação com um **banco de dados SQL Server**.\n\n### ✅ Documentação da API\n- **Swagger (OpenAPI)** configurado para facilitar o uso e testes da API.\n\n## 🛠️ Tecnologias Utilizadas\n- **C# e ASP.NET Core** (Minimal API)\n- **JWT (JSON Web Token)** para autenticação\n- **Entity Framework Core** para acesso ao banco de dados\n- **SQL Server** como banco de dados\n- **Swagger** para documentação\n\n## 🔒 Segurança e Boas Práticas\nEsta API foi projetada seguindo **boas práticas de segurança e organização**, garantindo escalabilidade e facilidade de manutenção. Ideal para integrar um sistema de gestão de veículos com usuários administrativos.\n",
+      "links": [
+        {
+          "label": "Repo",
+          "href": "https://github.com/luc118i/minimal-api"
+        }
+      ]
+    },
+    {
+      "id": "portfolio-profissional-1page",
+      "category": "frontend",
+      "status": "Concluído",
+      "role": "Front-end (solo) – design, layout, componentes e identidade visual",
+      "repo": "luc118i/Portifolio-advogado-Marlon",
+      "repoUrl": "https://github.com/luc118i/Portifolio-advogado-Marlon",
+      "stars": 0,
+      "updatedAt": "2025-11-26T20:38:56Z",
+      "title": "📘 Portfólio Profissional – Advogado Marlon",
+      "shortDescription": "Este repositório contém o desenvolvimento completo do Portfólio Profissional do Advogado Marlon, criado para oferecer uma presença digital moderna, elegante e funcional.",
+      "description": "Este repositório contém o desenvolvimento completo do Portfólio Profissional do Advogado Marlon, criado para oferecer uma presença digital moderna, elegante e funcional.",
+      "problem": "",
+      "context": "",
+      "solution": "",
+      "usage": "` Desenvolvido por Lucas Inácio\nGitHub: https://github.com/luc118i",
+      "features": [],
+      "benefits": [],
+      "stack": [
+        "React",
+        "Vite",
+        "TypeScript",
+        "Tailwind CSS",
+        "lucide-react",
+        "Radix UI",
+        "Clamp()",
+        "Google Fonts"
+      ],
+      "readme": "# 📘 Portfólio Profissional – Advogado Marlon\n\nEste repositório contém o desenvolvimento completo do **Portfólio Profissional do Advogado Marlon**, criado para oferecer uma presença digital moderna, elegante e funcional.  \nO objetivo é entregar uma interface que represente credibilidade, profissionalismo e facilidade de navegação — essenciais para a advocacia contemporânea.\n\n---\n\n# 🏛️ 1. Propósito do Projeto\n\nEm um mercado jurídico cada vez mais digital, advogados precisam transmitir:\n\n- **autoridade**\n- **confiabilidade**\n- **qualidade profissional**\n- **organização**\n- **facilidade de contato**\n\nEste projeto foi criado exatamente com essa visão:  \n✔ construir um portfólio que **eleva a imagem do advogado**,  \n✔ apresenta **suas áreas de atuação**,  \n✔ demonstra **experiência e formação**,  \n✔ e facilita o acesso ao seu **currículo digital** via QR Code.\n\nO design foi pensado para ser minimalista, institucional e moderno — com foco na área jurídica.\n\n---\n\n# 🧰 2. Tecnologias Utilizadas\n\nO projeto foi construído com foco em performance, organização e escalabilidade:\n\n| Tecnologia       | Uso                                                   |\n| ---------------- | ----------------------------------------------------- |\n| **React**        | Estrutura da interface e componentes                  |\n| **Vite**         | Ambiente rápido de desenvolvimento e build            |\n| **TypeScript**   | Tipagem estática, segurança e qualidade               |\n| **Tailwind CSS** | Estilização profissional, responsiva e sem CSS pesado |\n| **lucide-react** | Ícones vetoriais de alta qualidade                    |\n| **Radix UI**     | Componentes acessíveis e avançados                    |\n| **Clamp()**      | Tamanhos de texto fluidos e responsivos               |\n| **Google Fonts** | Tipografias Playfair Display e Inter                  |\n\n---\n\n### 3. Arquitetura do Projeto\n\nA estrutura foi planejada para ser clara, limpa e escalável:\n\n```text\n/\n├── src/\n│ ├── pages/\n│ │ ├── CoverPage.tsx # Introdução / Capa\n│ │ ├── PresentationLetterPage.tsx # Carta de apresentação\n│ │ ├── PracticeAreasPage.tsx # Áreas do Direito\n│ │ ├── EducationPage.tsx # Formação acadêmica\n│ │ ├── ExperiencePage.tsx # Experiência profissional\n│ │ ├── SkillsPage.tsx # Competências\n│ │ ├── DifferentialsPage.tsx # Qualidades e diferenciais\n│ │ └── ContactPage.tsx # Informações de contato\n│ │\n│ ├── components/\n│ │ └── ui/\n│ │ ├── PortfolioNavigation.tsx # Navegação lateral\n│ │ └── MobileMenu.tsx # Menu mobile responsivo\n│ │\n│ ├── styles/\n│ │ ├── globals.css # Estilos globais\n│ │ └── utilities.css # Ajustes adicionais\n│ │\n│ ├── App.tsx # Gerencia a troca das páginas\n│ └── main.tsx # Entrypoint da aplicação\n│\n├── public/\n├── package.json\n├── vite.config.ts\n└── README.md\n\n---\n\n# 🎨 4. Identidade Visual\n\nO projeto foi construído com uma identidade visual baseada em:\n\n- **Tonalidades institucionais**: Azul profundo (#0A0F24), dourado fino (#C2A14D) e cinzas suaves\n- **Tipografia clássica** (Playfair Display) para títulos\n- **Tipografia moderna e limpa** (Inter) para textos\n- **Linhas finas e elementos sutis** remetendo à elegância jurídica\n- **Layout responsivo** com foco em leitura confortável\n\n---\n\n# 📂 5. Seções do Portfólio\n\n### 🖼️ **Cover Page — Apresentação**\n\n- Foto (opcional)\n- Nome formal\n- Título profissional\n- Frase de impacto jurídico\n\n### ✉️ **Carta de Apresentação**\n\n- Resumo profissional\n- Objetivo\n- Valores e visão jurídica\n\n### ⚖️ **Áreas de Atuação**\n\nCom ícones profissionais para Direito:\n\n- Penal\n- Administrativo\n- Civil\n- Empresarial\n- Trabalhista\n- Família\n- Tributário\n  _(personalizável)_\n\n### 🎓 **Formação Acadêmica**\n\n- Graduação\n- Pós-graduações\n- Certificações\n- Cursos adicionais relevantes\n\n### 💼 **Experiência Profissional**\n\n- Escritórios\n- Estágios\n- Cargos jurídicos\n- Atividades e conquistas\n\n### 🧠 **Habilidades e Competências**\n\n- Redação jurídica\n- Atendimento ao cliente\n- Gestão de processos\n- Peticionamento digital\n- Oratória\n- Negociação\n\n### ⭐ **Diferenciais**\n\n- Destreza em audiências\n- Atualização constante\n- Ética e responsabilidade\n- Agilidade processual\n\n### 📞 **Contato**\n\n- WhatsApp\n- E-mail profissional\n- LinkedIn\n- Localização\n- QR Code para currículo digital\n\n---\n\n# 🚀 6. Como Executar o Projeto\n\n```bash\ngit clone https://github.com/luc118i/Portifolio-advogado-Marlon.git\ncd Portifolio-advogado-Marlon\nnpm install\nnpm run dev\n````\n\nDesenvolvido por Lucas Inácio\nGitHub: https://github.com/luc118i\n",
+      "links": [
+        {
+          "label": "Repo",
+          "href": "https://github.com/luc118i/Portifolio-advogado-Marlon"
+        }
+      ]
+    }
+  ]
+}
