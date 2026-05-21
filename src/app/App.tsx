@@ -18,6 +18,7 @@ import { useStudioOverrides } from "@/app/components/portfolio/ai-studio/useStud
 import { AIStudio } from "@/app/components/portfolio/ai-studio/AIStudio";
 import { Intro } from "@/app/components/portfolio/Intro";
 import { Project } from "./components/portfolio/types";
+import publishedOverrides from "@/data/studio-overrides.json";
 
 function ScrollToTopButton() {
   const [visible, setVisible] = useState(false);
@@ -64,9 +65,13 @@ function useStudioAccess() {
 function useAllProjects(): Project[] {
   const { cases } = useAICases();
   const { overrides } = useStudioOverrides();
+  const publishedHidden = new Set<string>(publishedOverrides.hidden);
   // AI cases do localStorage que ainda não foram publicados no JSON
+  // Excluir IDs ocultos via studio overrides (build-time) para evitar re-adição
   const staticIds = new Set(staticProjects.map((p) => p.id));
-  const localOnlyAI = cases.map((c) => c.project).filter((p) => !staticIds.has(p.id));
+  const localOnlyAI = cases
+    .map((c) => c.project)
+    .filter((p) => !staticIds.has(p.id) && !publishedHidden.has(p.id));
   return [...staticProjects, ...localOnlyAI]
     .filter((p) => !overrides.hidden.includes(p.id))
     .map((p) => {
