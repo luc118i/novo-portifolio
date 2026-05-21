@@ -14,22 +14,22 @@ const VARIANTS: CtaVariant[] = [
     title: "Quer ver isso aplicado no seu cenário?",
     subtitle:
       "Posso te mostrar como eu desenharia a solução e quais ganhos você teria em tempo, padronização e rastreabilidade.",
-    primary: { label: "Falar comigo", href: "#contato" },
-    secondary: { label: "Ver próximo projeto", href: "#case-NEXT" },
+    primary: { label: "Falar comigo", href: "/#contato" },
+    secondary: { label: "Ver próximo projeto", href: "#NEXT" },
   },
   {
     title: "Quer acelerar sua operação com automação?",
     subtitle:
       "Eu consigo transformar rotinas manuais em fluxos rápidos e rastreáveis com planilhas, scripts e sistemas sob medida.",
-    primary: { label: "Entrar em contato", href: "#contato" },
-    secondary: { label: "Ver próximo projeto", href: "#case-NEXT" },
+    primary: { label: "Entrar em contato", href: "/#contato" },
+    secondary: { label: "Ver próximo projeto", href: "#NEXT" },
   },
   {
     title: "Quer ver mais soluções parecidas?",
     subtitle:
       "Tenho outros projetos com foco em organização, automação e clareza operacional.",
-    primary: { label: "Ver todos os projetos", href: "#projetos" },
-    secondary: { label: "Ver próximo projeto", href: "#case-NEXT" },
+    primary: { label: "Ver todos os projetos", href: "/#projetos" },
+    secondary: { label: "Ver próximo projeto", href: "#NEXT" },
   },
 ];
 

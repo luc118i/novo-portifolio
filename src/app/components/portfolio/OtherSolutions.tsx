@@ -1,6 +1,10 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { Project } from "./types";
+import { ProjectImage } from "./ProjectImage";
+
+const MotionLink = motion.create(Link);
 
 interface OtherSolutionsProps {
   projects: Project[];
@@ -39,9 +43,9 @@ export function OtherSolutions({ projects }: OtherSolutionsProps) {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {secondaryProjects.map((project, index) => (
-            <motion.a
+            <MotionLink
               key={project.id}
-              href={`#case-${project.id}`}
+              to={`/projetos/${project.id}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -49,10 +53,12 @@ export function OtherSolutions({ projects }: OtherSolutionsProps) {
               className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
             >
               <div className="aspect-video overflow-hidden bg-gray-100">
-                <img
+                <ProjectImage
                   src={project.image}
                   alt={project.title}
-                  loading="lazy"
+                  title={project.title}
+                  stack={project.stack}
+                  category={project.category}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
@@ -90,7 +96,7 @@ export function OtherSolutions({ projects }: OtherSolutionsProps) {
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
-            </motion.a>
+            </MotionLink>
           ))}
         </div>
       </div>

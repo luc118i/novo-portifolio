@@ -1,18 +1,16 @@
 import {
-  ArrowLeft,
   ArrowRight,
   CheckCircle2,
   Layers,
-  ChevronDown,
-  Code2,
 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { Project } from "./types";
 import { CaseBackPill } from "./CaseBackPill";
 import { CaseCta } from "./CaseCta";
 import { AutomationShowcase } from "./AutomationShowcase";
 import { CodeSamples } from "./CodeSamples";
+import { ProjectImage } from "./ProjectImage";
 
 interface CaseStudyProps {
   project: Project;
@@ -20,138 +18,24 @@ interface CaseStudyProps {
 }
 
 export function CaseStudy({ project, nextProjectId }: CaseStudyProps) {
-  const sectionRef = useRef<HTMLElement | null>(null);
   const heroRef = useRef<HTMLDivElement | null>(null);
+  const [pillActive, setPillActive] = useState(false);
+  const [onDark, setOnDark] = useState(true);
 
-  const [isActive, setIsActive] = useState(false);
-  const [onDark, setOnDark] = useState(false);
-
-  // 1) Define quando o CASE está "ativo" (pra evitar aparecer antes da hora)
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    let t: number | null = null;
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (t) window.clearTimeout(t);
-        t = window.setTimeout(() => {
-          setIsActive(entry.isIntersecting);
-        }, 80);
-      },
-      { threshold: [0, 0.01], rootMargin: "-25% 0px -60% 0px" },
-    );
-
-    obs.observe(el);
-    return () => {
-      if (t) window.clearTimeout(t);
-      obs.disconnect();
+    const onScroll = () => {
+      const heroHeight = heroRef.current?.offsetHeight ?? 400;
+      setPillActive(window.scrollY > heroHeight * 0.5);
+      setOnDark(window.scrollY < heroHeight * 0.85);
     };
-  }, []);
-
-  // 2) Define quando está em cima do HERO (pra alternar dark/light)
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-
-    let current = false; // começa false se você quer header claro até entrar no hero
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        const r = entry.intersectionRatio;
-
-        // liga "dark" só quando estiver bem dentro do hero
-        if (!current && r >= 0.35) {
-          current = true;
-          setOnDark(true);
-        }
-
-        // desliga "dark" só quando estiver bem fora do hero
-        if (current && r <= 0.12) {
-          current = false;
-          setOnDark(false);
-        }
-      },
-      {
-        threshold: [0, 0.12, 0.35, 1],
-        rootMargin: "-64px 0px -70% 0px",
-      },
-    );
-
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-
-    let t: number | null = null;
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        // ✅ isActive: só ativa quando o topo do HERO estiver “chegando”
-        // Ajuste esse gatilho conforme seu headerHeight
-        const top = entry.boundingClientRect.top;
-        const headerH = 64; // ajuste se seu sticky tem outra altura
-        const shouldBeActive =
-          top <= headerH + 8 && entry.intersectionRatio > 0;
-
-        if (t) window.clearTimeout(t);
-        t = window.setTimeout(() => setIsActive(shouldBeActive), 60);
-      },
-      {
-        threshold: [0, 0.01, 0.1],
-        // rootMargin não precisa ser agressivo aqui, porque usamos boundingClientRect.top
-        rootMargin: "0px 0px 0px 0px",
-      },
-    );
-
-    obs.observe(el);
-    return () => {
-      if (t) window.clearTimeout(t);
-      obs.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-
-    let current = false;
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        const r = entry.intersectionRatio;
-
-        // ✅ histerese (anti tremor)
-        if (!current && r >= 0.35) {
-          current = true;
-          setOnDark(true);
-        } else if (current && r <= 0.12) {
-          current = false;
-          setOnDark(false);
-        }
-      },
-      {
-        threshold: [0, 0.12, 0.35, 1],
-        rootMargin: "-64px 0px -70% 0px",
-      },
-    );
-
-    obs.observe(el);
-    return () => obs.disconnect();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id={`case-${project.id}`}
-      className="bg-white scroll-mt-28"
-      aria-label={`Estudo de caso: ${project.title}`}
-    >
-      <CaseBackPill onDark={onDark} active={isActive} />
+    <div className="bg-white">
+      <CaseBackPill onDark={onDark} active={pillActive} />
 
       {/* Hero */}
       <div
@@ -211,26 +95,27 @@ export function CaseStudy({ project, nextProjectId }: CaseStudyProps) {
       </div>
 
       {/* Main Image */}
-      {project.screenshots && project.screenshots.length > 0 && (
-        <div className="relative -mt-16 mb-20 px-6 md:px-12">
+      <div className="relative -mt-16 mb-20 px-6 md:px-12">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="rounded-2xl overflow-hidden shadow-2xl"
+              className="rounded-2xl overflow-hidden shadow-2xl h-64 md:h-80"
             >
-              <img
-                src={project.screenshots[0]}
+              <ProjectImage
+                src={project.screenshots?.[0] ?? project.image}
                 alt={project.title}
-                className="w-full h-auto"
-                loading="lazy"
+                title={project.title}
+                stack={project.stack}
+                category={project.category}
+                className="w-full h-full object-cover"
+                hideTitle
               />
             </motion.div>
           </div>
         </div>
-      )}
 
       {/* Content */}
       <div className="max-w-5xl mx-auto px-6 md:px-12 pb-24">
@@ -380,7 +265,7 @@ export function CaseStudy({ project, nextProjectId }: CaseStudyProps) {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50 transition-all"
+                  className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 cursor-pointer transition-all hover:bg-gray-50 active:scale-95"
                   style={{
                     color: "#0A0F24",
                     borderColor: "#E2E8F0",
@@ -398,6 +283,6 @@ export function CaseStudy({ project, nextProjectId }: CaseStudyProps) {
           </div>
         ) : null}
       </div>
-    </section>
+    </div>
   );
 }

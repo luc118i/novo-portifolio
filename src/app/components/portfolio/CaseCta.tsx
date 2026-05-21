@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useEnterViewportOncePerEntry } from "../../../Hook/useEnterViewportOncePerEntry";
 import { useRotatingCta } from "../../../Hook/useRotatingCta";
 
@@ -15,11 +16,11 @@ export function CaseCta({ nextProjectId }: Props) {
 
   const { variant } = useRotatingCta(entered);
 
-  const secondaryHref =
-    variant.secondary.href === "#case-NEXT"
+  const secondaryTo =
+    variant.secondary.href === "#NEXT"
       ? nextProjectId
-        ? `#case-${nextProjectId}`
-        : "#projetos"
+        ? `/projetos/${nextProjectId}`
+        : "/#projetos"
       : variant.secondary.href;
 
   return (
@@ -38,9 +39,9 @@ export function CaseCta({ nextProjectId }: Props) {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
-          <a
-            href={variant.primary.href}
-            className="inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 transition-all hover:-translate-y-0.5"
+          <Link
+            to={variant.primary.href}
+            className="inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 cursor-pointer transition-all hover:-translate-y-0.5 active:scale-95 active:translate-y-0"
             style={{
               backgroundColor: "#C2A14D",
               color: "#0A0F24",
@@ -49,11 +50,11 @@ export function CaseCta({ nextProjectId }: Props) {
           >
             {variant.primary.label}
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </Link>
 
-          <a
-            href={secondaryHref}
-            className="inline-flex items-center justify-center rounded-lg px-5 py-3 border transition-colors hover:bg-white"
+          <Link
+            to={secondaryTo}
+            className="inline-flex items-center justify-center rounded-lg px-5 py-3 border cursor-pointer transition-all hover:bg-white active:scale-95"
             style={{
               borderColor: "#E2E8F0",
               color: "#0A0F24",
@@ -61,7 +62,7 @@ export function CaseCta({ nextProjectId }: Props) {
             }}
           >
             {variant.secondary.label}
-          </a>
+          </Link>
         </div>
       </div>
     </div>

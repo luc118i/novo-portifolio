@@ -13,3 +13,57 @@ html {
     scroll-behavior: auto;
   }
 }
+
+/* ── Placeholder animado (ProjectImage) ─────────────────────── */
+@keyframes ph-blob-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  35%       { transform: translate(18%, -22%) scale(1.08); }
+  70%       { transform: translate(-12%, 14%) scale(0.94); }
+}
+@keyframes ph-blob-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-20%, 16%) scale(1.06); }
+  75%       { transform: translate(14%, -10%) scale(0.97); }
+}
+@keyframes ph-blob-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  55%       { transform: translate(10%, 20%) scale(1.1); }
+}
+
+.ph-blob-1 { animation: ph-blob-1 13s ease-in-out infinite; }
+.ph-blob-2 { animation: ph-blob-2 17s ease-in-out infinite; }
+.ph-blob-3 { animation: ph-blob-3 21s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ph-blob-1, .ph-blob-2, .ph-blob-3 { animation: none; }
+}
+
+/* ── BrandMark — spiral clock-wipe ─────────────────────────── */
+@property --panel-angle {
+  syntax: "<angle>";
+  initial-value: 360deg;
+  inherits: false;
+}
+
+.panel-overlay {
+  mask-image: conic-gradient(
+    from -90deg at 50% 50%,
+    black 0deg,
+    black var(--panel-angle),
+    transparent var(--panel-angle)
+  );
+  -webkit-mask-image: conic-gradient(
+    from -90deg at 50% 50%,
+    black 0deg,
+    black var(--panel-angle),
+    transparent var(--panel-angle)
+  );
+  transition: --panel-angle 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.panel-overlay-full  { --panel-angle: 360deg; }
+.panel-overlay-zero  { --panel-angle: 0deg;   }
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-overlay { transition: none; }
+}

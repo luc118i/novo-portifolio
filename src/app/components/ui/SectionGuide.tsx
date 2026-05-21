@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 type Item = {
   id: string;
@@ -14,7 +15,10 @@ const SECTIONS: Item[] = [
 ];
 
 export function SectionGuide() {
+  const { pathname } = useLocation();
   const [activeId, setActiveId] = useState<string>("home");
+
+  if (pathname !== "/") return null;
 
   useEffect(() => {
     const headerOffset = 120; // ajuste se necessário

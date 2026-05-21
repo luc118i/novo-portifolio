@@ -1,4 +1,5 @@
 import { ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function CaseBackPill({
   onDark,
@@ -12,17 +13,16 @@ export function CaseBackPill({
       className={[
         "fixed top-4 left-0 right-0 z-[9999]",
         "transition-all duration-300 ease-out",
-        active ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2",
-        "pointer-events-none", // container não clicável
+        active ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none",
       ].join(" ")}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pointer-events-auto">
-        <a
-          href="#projetos"
+      <div className={["max-w-7xl mx-auto px-6 md:px-12", active ? "pointer-events-auto" : "pointer-events-none"].join(" ")}>
+        <Link
+          to="/#projetos"
           className={[
             "inline-flex items-center gap-2 rounded-full px-4 py-2",
-            "border transition-all",
-            "hover:gap-3 hover:-translate-y-0.5",
+            "border cursor-pointer transition-all",
+            "hover:gap-3 hover:-translate-y-0.5 active:scale-95",
             "backdrop-blur-md",
             onDark
               ? "bg-[#0A0F24]/40 border-white/15 text-white/90"
@@ -32,7 +32,7 @@ export function CaseBackPill({
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="font-semibold text-sm">Voltar aos projetos</span>
-        </a>
+        </Link>
       </div>
     </div>
   );

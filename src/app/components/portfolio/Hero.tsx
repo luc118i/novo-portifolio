@@ -59,7 +59,7 @@ export function Hero() {
           {/* AQUI MUDA TUDO */}
           <a
             href="#projetos"
-            className="group inline-flex items-center gap-3 px-8 py-4 rounded-lg transition-all hover:-translate-y-1 hover:shadow-xl"
+            className="group inline-flex items-center gap-3 px-8 py-4 rounded-lg cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl active:scale-95 active:translate-y-0"
             style={{
               backgroundColor: "#C2A14D",
               color: "#0A0F24",

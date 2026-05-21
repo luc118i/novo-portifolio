@@ -1,9 +1,8 @@
-// types.ts
 export type ProjectCategory =
-  | "featured" // projetos principais / produto real
-  | "automation" // scripts, sheets, rotinas
+  | "featured"    // projetos principais / produto real
+  | "automation"  // scripts, sheets, rotinas
   | "architecture" // estudo técnico, base, boas práticas
-  | "frontend"; // landing pages, portfólios, UI
+  | "frontend";   // landing pages, portfólios, UI
 
 export type ProjectLink = {
   label: "Repo" | "Demo" | "Case" | "Video";
@@ -15,7 +14,6 @@ export type CodeSample = {
   description?: string;
   language?: "javascript" | "ts" | "bash" | "json";
   code: string;
-
   screenshot?: string;
 };
 
@@ -26,8 +24,8 @@ export type Project = {
   description: string;
   category: ProjectCategory;
 
-  image: string; // path local: "/projects/<id>/cover.webp" ou placeholder
-  screenshots?: string[]; // paths locais
+  image: string;
+  screenshots?: string[];
 
   problem: string;
   context: string;
@@ -42,4 +40,14 @@ export type Project = {
   role?: string;
   metrics?: Array<{ label: string; value: string; note?: string }>;
   codeSamples?: CodeSample[];
+
+  // Metadados do GitHub (preenchidos quando o projeto vem de um repo)
+  repo?: string;
+  repoUrl?: string;
+  stars?: number;
+  updatedAt?: string;
+  readme?: string; // README.md completo em markdown
 };
+
+// Campos que podem ser sobrescritos/complementados localmente no overrides.ts
+export type ProjectOverride = Partial<Omit<Project, "id">>;

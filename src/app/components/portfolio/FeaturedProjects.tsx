@@ -1,7 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { Project } from "./types";
 import { Section } from "./Section";
+import { ProjectImage } from "./ProjectImage";
+
+const MotionLink = motion.create(Link);
 
 interface FeaturedProjectsProps {
   projects: Project[];
@@ -27,9 +31,9 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
 
         <div className="grid gap-8">
           {featuredProjects.map((project, index) => (
-            <motion.a
+            <MotionLink
               key={project.id}
-              href={`#case-${project.id}`}
+              to={`/projetos/${project.id}`}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -40,11 +44,13 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image */}
                   <div className="relative h-64 md:h-full overflow-hidden bg-gray-100">
-                    <img
+                    <ProjectImage
                       src={project.image}
                       alt={project.title}
+                      title={project.title}
+                      stack={project.stack}
+                      category={project.category}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   </div>
@@ -84,7 +90,7 @@ export function FeaturedProjects({ projects }: FeaturedProjectsProps) {
                   </div>
                 </div>
               </div>
-            </motion.a>
+            </MotionLink>
           ))}
         </div>
       </div>

@@ -1,8 +1,8 @@
 import { Code2, Database, Zap } from "lucide-react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { Section } from "./Section";
-import profileImage from "@/assets/images/profile/lucas-profile.webp";
-
+import { BrandMark } from "./BrandMark";
 import { ProfessionalSignature } from "./ProfessionalSignature";
 
 export function About() {
@@ -39,34 +39,15 @@ export function About() {
             transition={{ duration: 0.6 }}
             className="md:col-span-2"
           >
-            <div className="aspect-square rounded-2xl overflow-hidden shadow-xl">
-              <img
-                src={profileImage}
-                alt="Lucas Luiz Inacio da Silva"
-                className="w-full h-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
+            <BrandMark />
             <div className="mt-8">
-              <a
-                href="#contato"
-                className="
-                        inline-flex items-center gap-3
-                        px-6 py-3
-                        rounded-xl
-                        border border-[#0A0F24]/15
-                        bg-[#0A0F24]
-                        text-white
-                        text-sm tracking-wide
-                        transition-all duration-300
-                        hover:gap-4 hover:bg-[#0A0F24]/90
-                        shadow-sm
-                      "
+              <Link
+                to="/#contato"
+                className="inline-flex items-center gap-3 px-6 py-3 rounded-xl border border-[#0A0F24]/15 bg-[#0A0F24] text-white text-sm tracking-wide cursor-pointer transition-all duration-300 hover:gap-4 hover:bg-[#0A0F24]/90 active:scale-95 shadow-sm"
               >
                 Entrar em contato
                 <span className="text-[#C2A14D]">→</span>
-              </a>
+              </Link>
             </div>
           </motion.div>
 
