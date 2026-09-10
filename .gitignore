@@ -56,3 +56,6 @@ coverage
 .idea
 *.swp
 *.swo
+
+# Claude Code (worktrees/config locais)
+.claude/
