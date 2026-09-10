@@ -27,7 +27,7 @@ export function CodeSamples({ samples }: { samples: Sample[] }) {
           if (isOpen) setOpenIdx(null);
         }}
         aria-expanded={isOpen}
-        className="w-full flex items-center justify-between gap-4 p-5 text-left hover:bg-gray-50 transition-colors rounded-2xl"
+        className="w-full flex items-center justify-between gap-4 p-5 text-left cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors rounded-2xl"
       >
         <div>
           <h3
@@ -91,7 +91,7 @@ export function CodeSamples({ samples }: { samples: Sample[] }) {
                           setOpenIdx((cur) => (cur === idx ? null : idx))
                         }
                         aria-expanded={open}
-                        className="w-full p-5 text-left hover:bg-gray-50 transition-colors"
+                        className="w-full p-5 text-left cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors"
                       >
                         <div className="flex items-start justify-between gap-4">
                           <div className="min-w-0">

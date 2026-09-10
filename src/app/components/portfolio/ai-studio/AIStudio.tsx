@@ -91,7 +91,7 @@ function EditForm({
   const labelCls = "block text-xs text-white/40 mb-1 uppercase tracking-wider";
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-1 min-h-0">
       <div className="flex items-center gap-3 px-6 py-4 flex-shrink-0 border-b border-white/06">
         <button
           onClick={onCancel}
@@ -105,7 +105,7 @@ function EditForm({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+      <div className="studio-scroll flex-1 overflow-y-scroll p-6 space-y-4">
         <div>
           <label className={labelCls}>Título</label>
           <input className={inputCls} value={form.title} onChange={set("title")} />
@@ -483,7 +483,7 @@ export function AIStudio({ onClose }: { onClose: () => void }) {
           {editingProject ? (
             <motion.div
               key="edit"
-              className="flex flex-col h-full max-h-[88vh]"
+              className="flex flex-col flex-1 min-h-0"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
@@ -545,7 +545,7 @@ export function AIStudio({ onClose }: { onClose: () => void }) {
               </div>
 
               {/* Conteúdo */}
-              <div className="flex-1 overflow-y-auto p-6">
+              <div className="studio-scroll flex-1 overflow-y-auto p-6">
                 <AnimatePresence mode="wait">
 
                   {/* ── ABA PROJETOS ── */}

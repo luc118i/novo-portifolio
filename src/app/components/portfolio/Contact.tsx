@@ -66,8 +66,9 @@ export function Contact() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                whileTap={{ scale: 0.97 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group p-6 rounded-xl border transition-all hover:translate-y-[-4px]"
+                className="group p-6 rounded-xl border cursor-pointer transition-all hover:translate-y-[-4px]"
                 style={{
                   backgroundColor: "rgba(255, 255, 255, 0.05)",
                   borderColor: "rgba(255, 255, 255, 0.1)",

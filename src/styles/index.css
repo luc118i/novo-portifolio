@@ -38,6 +38,12 @@ html {
   .ph-blob-1, .ph-blob-2, .ph-blob-3 { animation: none; }
 }
 
+/* ── AI Studio — scrollbar visível no tema escuro ──────────── */
+.studio-scroll::-webkit-scrollbar          { width: 5px; }
+.studio-scroll::-webkit-scrollbar-track    { background: rgba(255,255,255,0.04); border-radius: 99px; }
+.studio-scroll::-webkit-scrollbar-thumb    { background: rgba(194,161,77,0.35); border-radius: 99px; }
+.studio-scroll::-webkit-scrollbar-thumb:hover { background: rgba(194,161,77,0.6); }
+
 /* ── BrandMark — spiral clock-wipe ─────────────────────────── */
 @property --panel-angle {
   syntax: "<angle>";

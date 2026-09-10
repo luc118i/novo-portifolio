@@ -1,42 +1,39 @@
+# Portfólio Lucas Inácio - Soluções Digitais
 
+Portfólio profissional em **React + TypeScript + Vite** para apresentar sistemas digitais, automações e estudos de caso de projetos reais.
 
-# Portfólio Profissional — Sistemas Digitais para Operações Reais
+O projeto funciona como uma vitrine técnica orientada a dados: projetos podem vir de JSON local, de metadados sincronizados do GitHub ou de estudos de caso gerados pelo AI Studio.
 
-Este projeto é um **portfólio 1-page** desenvolvido em **React + Vite + Tailwind**, com navegação por âncoras e estudos de caso integrados na mesma página.
+## O que este portfólio entrega
 
-O objetivo não é apenas apresentar projetos, mas **demonstrar, com clareza, como tecnologia pode resolver problemas operacionais reais** através de sistemas, automações e boas práticas arquiteturais.
+- Home com apresentação, projetos em destaque, outras soluções, sobre e contato.
+- Páginas individuais para estudos de caso em `/projetos/:id`.
+- Renderização dinâmica de projetos a partir de dados estruturados.
+- Integração com GitHub para buscar metadados e README dos repositórios catalogados.
+- AI Studio opcional para gerar, editar, ocultar e publicar estudos de caso.
+- Animações com Motion e componentes UI baseados em Radix/shadcn.
+- Estrutura pronta para build estático e deploy em plataformas como Vercel ou Netlify.
 
----
+## Stack
 
-## Proposta do Portfólio
+- React 18
+- TypeScript
+- Vite 6
+- Tailwind CSS 4
+- React Router
+- Motion
+- Radix UI
+- Lucide React
+- PrismJS
+- Groq API, usada apenas no AI Studio
+- GitHub API, usada pelo script de sincronização
 
-Este portfólio foi pensado como um **produto** e não apenas uma página pessoal.
+## Estrutura principal
 
-Ele foi estruturado para:
-
-* Destacar projetos principais com estudo de caso completo
-* Apresentar automações, arquiteturas e soluções secundárias
-* Mostrar domínio técnico com exemplos reais de código (Apps Script)
-* Servir também como **modelo de portfólio profissional para clientes**
-
----
-
-## Stack utilizada
-
-* React
-* TypeScript
-* Vite
-* Tailwind CSS
-* Framer Motion
-* Lucide Icons
-
----
-
-## Estrutura do Projeto
-
-```
+```text
 src/
   app/
+    App.tsx
     components/
       portfolio/
         Hero.tsx
@@ -46,107 +43,124 @@ src/
         About.tsx
         Contact.tsx
         data.ts
+        overrides.ts
         types.ts
+        ai-studio/
+      ui/
+  data/
+    github-projects.json
+    ai-projects.json
+    studio-overrides.json
+  styles/
+public/
+  projects/
+scripts/
+  fetch-github-projects.mjs
 ```
 
-A aplicação é totalmente orientada a **dados**.
-Os projetos são definidos em `data.ts` e renderizados dinamicamente nas seções.
+## Como os projetos são carregados
 
----
+O arquivo `src/app/components/portfolio/data.ts` monta a lista final nesta ordem:
 
-## Seções do Portfólio
+1. Projetos vindos de `src/data/github-projects.json`.
+2. Projetos locais definidos por IDs em `LOCAL_ONLY_IDS` e complementados em `overrides.ts`.
+3. Projetos gerados/publicados pelo AI Studio em `src/data/ai-projects.json`.
+4. Edições e itens ocultos definidos em `src/data/studio-overrides.json`.
 
-### Hero
+Os projetos são ordenados por categoria:
 
-Posicionamento direto e profissional.
+- `featured`
+- `automation`
+- `architecture`
+- `frontend`
 
-### Projetos em destaque
-
-Projetos principais com foco em **sistemas reais**.
-
-### Outras soluções
-
-Automações, arquiteturas e frontends.
-
-### Estudos de caso (âncoras)
-
-Cada projeto possui uma seção detalhada na mesma página.
-
-### Sobre
-
-Posicionamento profissional + competências centrais.
-
-### Contato
-
-WhatsApp, Email, LinkedIn e GitHub com links diretos.
-
----
-
-## Projetos atuais
-
-* **Painel Operacional (Esquemas e Rotas)** — Sistema full-stack para padronização operacional
-* **Suite de Automações Google Sheets (Apps Script)** — Scripts reais em produção
-* **Minimal API com Arquitetura Limpa** — Projeto de estudo arquitetural
-* **Portfólio 1-page (Advocacia)** — Exemplo real de portfólio profissional para cliente
-
----
-
-## Conceito arquitetural
-
-Este portfólio foi construído para ser:
-
-* Escalável
-* Orientado a dados
-* Fácil de manter
-* Fácil de adaptar para novos projetos
-* Base reutilizável para criação de portfólios profissionais para clientes
-
----
-
-## Etapa atual do projeto
-
-Nesta etapa o projeto já possui:
-
-* Estrutura completa de seções
-* Navegação por âncoras com scrollspy
-* Estudos de caso funcionais
-* Organização profissional das imagens em `/public/projects`
-* Sistema de categorias de projetos (`featured`, `automation`, `architecture`, `frontend`)
-* Integração de exemplos de código nos estudos de caso
-* Estrutura pronta para deploy (Vercel / Netlify)
-
-Próximos refinamentos:
-
-* Ajustes visuais finos (tipografia, espaçamentos, imagens)
-* Criação das covers personalizadas dos projetos
-* Otimização final para deploy
-
----
-
-## Como rodar o projeto
+## Scripts
 
 ```bash
 npm install
 npm run dev
+npm run build
+npm run preview
 ```
 
----
+Scripts disponíveis:
 
-## Objetivo maior
+- `npm run dev`: atualiza os projetos do GitHub se o cache estiver velho e inicia o Vite.
+- `npm run build`: gera a build de produção em `dist/`.
+- `npm run preview`: abre uma prévia local da build.
+- `npm run fetch:github`: sincroniza repositórios catalogados em `scripts/fetch-github-projects.mjs`.
+- `npm run fetch:github:force`: força nova sincronização, ignorando o cache de 1 hora.
 
-Este portfólio representa uma filosofia:
+## Variáveis de ambiente
 
-> Tecnologia aplicada para resolver problemas reais de operação.
+Crie um `.env` a partir de `.env.example`:
 
-E também serve como base para oferecer:
+```env
+VITE_GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+VITE_GITHUB_USER=luc118i
+```
 
-* Criação de portfólios profissionais
-* Sistemas digitais personalizados
-* Automações operacionais
+Também é possível definir `GITHUB_TOKEN` no ambiente do terminal antes de rodar `fetch:github`, evitando o limite anônimo da GitHub API:
 
----
+```powershell
+$env:GITHUB_TOKEN="ghp_xxx"
+npm run fetch:github:force
+```
+
+## AI Studio
+
+O AI Studio fica escondido por padrão. Para ativar em desenvolvimento, acesse:
+
+```text
+http://localhost:5173/?studio
+```
+
+Ele permite:
+
+- buscar contexto de repositórios no GitHub;
+- gerar estudos de caso com Groq;
+- salvar casos no `localStorage`;
+- editar ou ocultar projetos;
+- publicar alterações em `src/data/ai-projects.json` e `src/data/studio-overrides.json`.
+
+Durante o desenvolvimento, o plugin `studio-publish` configurado em `vite.config.ts` também tenta executar `git add`, `git commit` e `git push` ao publicar pelo Studio.
+
+## Catálogo do GitHub
+
+Os repositórios sincronizados ficam no array `CATALOG` de `scripts/fetch-github-projects.mjs`.
+
+Para adicionar um novo repositório público:
+
+1. Inclua uma entrada no `CATALOG` com `repo`, `id`, `category`, `status` e `role`.
+2. Rode `npm run fetch:github:force`.
+3. Se necessário, complemente textos, imagens e links em `src/app/components/portfolio/overrides.ts`.
+
+## Imagens dos projetos
+
+As imagens públicas ficam em:
+
+```text
+public/projects/<id-do-projeto>/
+```
+
+Use caminhos absolutos a partir de `public`, por exemplo:
+
+```ts
+image: "/projects/painel-operacional/cover.webp"
+```
+
+## Deploy
+
+Para gerar a versão de produção:
+
+```bash
+npm run build
+```
+
+O resultado sai em `dist/`. Em hosts estáticos, configure fallback para `index.html`, pois as páginas de projeto usam React Router.
 
 ## Autor
 
-Lucas Luiz Inacio da Silva
+Lucas Luiz Inácio da Silva
+
 Desenvolvedor focado em transformar operações reais em sistemas digitais eficientes.
